@@ -16,6 +16,9 @@ class Movie(models.Model):
     def __str__(self):
         return f"{self.title} - {self.tmdb_id}"
 
+    class Meta:
+        ordering = ["-pk"]
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

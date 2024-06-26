@@ -15,3 +15,4 @@ def testview(request):
 class TestClassView(ListView):
     model = Movie
     template_name = 'movie_list.html'
+    paginate_by = 10
