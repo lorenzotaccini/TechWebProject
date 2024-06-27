@@ -1,5 +1,7 @@
 from django.http import HttpResponse
-
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from .forms import *
 
 def home(request):
     if not request.user.is_authenticated:
@@ -7,8 +9,8 @@ def home(request):
     return HttpResponse("<h1>Hello Worldo</h1>")
 
 
-def elenca_params(request):
-    response = ""
-    for k in request.GET:
-        response += request.GET[k] + " "
-    return HttpResponse(response)
+class UserCreateView(CreateView):
+    #form_class = UserCreationForm
+    form_class = CreateRegisteredUserForm
+    template_name = "user_create.html"
+    success_url = reverse_lazy("login")

@@ -1,18 +1,19 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.forms import ModelForm
-from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView
-from django.views.generic.edit import UpdateView
-from django.urls import reverse_lazy
+import requests
+from django.views.generic import ListView
+from .models import Movie
+from django.views.generic import ListView
+
 from .models import Movie
 
-def testview(request):
-    return HttpResponse("Hello World")
 
-
-class TestClassView(ListView):
+class MovieListView(ListView):
     model = Movie
     template_name = 'movie_list.html'
     paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Titolo Dinamico della Lista'
+        context['movie_list'] = Movie.objects.all()
+        return context
+
