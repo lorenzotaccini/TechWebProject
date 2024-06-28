@@ -23,10 +23,10 @@
             border-radius: 10px;
         }
         .navbar {
-            background-color: #0c5700; /* Navbar background color */
+            background-color: #0d6100; /* Navbar background color */
         }
         .navbar-search {
-            width: 300px; /* Adjust as needed */
+            width: 500px; /* Adjust as needed */
         }
         .footer {
             background-color: #f8f9fa; /* Footer background color */
@@ -45,7 +45,8 @@
         }
 
     </style>
-  {% load crispy_forms_tags %} 
+    {% load crispy_forms_tags %}
+    {% load auth_extras %}
 </head>
 <body>
 
@@ -97,25 +98,36 @@
                 <a class="nav-link" href={% url 'login' %}><i class="fas fa-user"></i>Login</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user"></i>Sign-in</a>
+                <a class="nav-link" href="{% url 'rregister' %}"><i class="fas fa-user"></i>Sign-up</a>
             </li>
+            {% if request.user | has_group:"moderator" %}
+                {% endif %}
         </ul>            
         {% endif %}
     </div>
 </nav>
 
-{% if "ok" in request.GET.login  %}
+{% if "ok" in request.GET.login or "ok" in request.GET.logout %}
 <div id="info" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Welcome {{user.username}} </h5>
+        {% if "ok" in request.GET.login %}
+            <h5 class="modal-title">Welcome {{user.username}} </h5>
+        {% else %}
+            <h5 class="modal-title">Goodbye {{user.username}} </h5>
+        {% endif %}
+        
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p> You are now logged in! </p>
+          {% if "ok" in request.GET.login %}
+            <p> You are now logged in! </p>
+          {% else %}
+            <p> You are now logged out! See you soon. </p>
+          {% endif %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
@@ -132,9 +144,8 @@
 {% endif %}
 
 <!-- Content Section -->
-    {% block subtitle %}
-    {% endblock %}
-
+    
+    
     {% block content %}
     {% endblock %}
 

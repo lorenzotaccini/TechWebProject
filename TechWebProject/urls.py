@@ -23,9 +23,12 @@ from . import views
 
 urlpatterns = [
     path('', include('movieapp.urls'), name='home'),
-    path('register/', views.UserCreateView.as_view(), name='register'),
-    path("login/", auth_views.LoginView.as_view(), name="login"),
-    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path('rregister/', views.UserCreateView.as_view(), name='rregister'),
+    path('mregister/', views.ModeratorCreateView.as_view(), name='mregister'),
+    #path("login/", auth_views.LoginView.as_view(), name="login"),
+    #path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 
+    path("login/", views.login_user, name="login"),
+    path("logout/", views.logout_user, name="logout"),
     path('admin/', admin.site.urls),
 ]

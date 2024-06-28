@@ -5,6 +5,6 @@ from .views import MovieListView
 
 app_name = "movieapp"
 urlpatterns = [
-    path('', MovieListView.as_view(), name='home'),
+    path(r'', MovieListView.as_view(), name='home'),
     #path('title/<pk>')
 ]
