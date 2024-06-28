@@ -50,8 +50,8 @@ class Profile(models.Model):
         default=join('static', 'unknown_user.png'),
         blank=True
     )
-    requests = models.ManyToManyField(Movie, through='Request', blank=True, related_name='requests')
-    watchlisted = models.ManyToManyField(Movie, blank=True, related_name='watchlisted')
+    requests = models.ManyToManyField(Movie, through='Request', blank=True, related_name='requests', default=None)
+    watchlisted = models.ManyToManyField(Movie, blank=True, related_name='watchlisted', default=None)
 
     def __str__(self):
         return f"{self.user.pk} - {self.user.username}"

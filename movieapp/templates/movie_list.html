@@ -13,11 +13,11 @@
                 {% if movie.poster_url %}
                 <img src="{{ movie.poster_url }}" class="card-img-top" alt="Poster del film">
                 {% else %}
-                <img src="path_to_default_image" class="card-img-top" alt="Immagine non disponibile">
+                <img src="" class="card-img-top" alt="Immagine non disponibile">
                 {% endif %}
                 <div class="card-body">
-                    <h5 class="card-title">{{ movie.title }}</h5>
-                    <p class="card-text">{{ movie.description }}</p>
+                    <h5 class="card-title text-truncate">{{ movie.title }}</h5>
+                    <p class="card-text multi-line-text-truncate">{{ movie.description }}</p>
                 </div>
             </div>
         </div>

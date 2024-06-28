@@ -7,6 +7,7 @@ class CreateModeratorForm(UserCreationForm):
         user = super().save(commit)
         g = Group.objects.get(name="Moderator")
         g.user_set.add(user)
+        return user
 
 
 class CreateRegisteredUserForm(UserCreationForm):
@@ -14,3 +15,4 @@ class CreateRegisteredUserForm(UserCreationForm):
         user = super().save(commit)
         g = Group.objects.get(name="Registered")
         g.user_set.add(user)
+        return user
