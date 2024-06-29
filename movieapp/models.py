@@ -1,3 +1,4 @@
+import json
 from os.path import join
 
 import requests
@@ -15,12 +16,15 @@ class Movie(models.Model):
     genre = models.CharField(max_length=100)
     available = models.BooleanField(default=False)
 
+    def get_genre_as_list(self):
+        return json.loads(self.genre)
+
     @property
     def poster_url(self):
         api_key = '5dbf33ab1210565bba9d880c176bf3d8'
         base_url = f'https://api.themoviedb.org/3/movie/{self.tmdb_id}?api_key={api_key}'
 
-    '''
+
         try:
             response = requests.get(base_url)
             data = response.json()
@@ -35,7 +39,7 @@ class Movie(models.Model):
         except requests.exceptions.RequestException as e:
             print('Error in API request:', e)
             return None
-    '''
+
 
     def __str__(self):
         return f"{self.title} - {self.tmdb_id}"

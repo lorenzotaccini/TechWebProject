@@ -1,0 +1,26 @@
+{% extends 'GPT_home.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{ movie.poster_url }}" class="img-fluid rounded-lg" alt="{{ movie.title }}">
+        </div>
+        <div class="col-md-8">
+            <a href="{% url 'movieapp:home' %}?page={{ view.get_my_page }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> ◀ Back to list</a>
+            <h1 class="mt-3">{{ movie.title }}</h1>
+            <p><strong>Anno:</strong> {{ movie.year }}</p>
+            <p><strong>Genere:</strong></p>
+            <ul class="list-unstyled">
+                {% for g in movie.get_genre_as_list %}
+                <li>{{ g }}</li>
+                {% endfor %}
+            </ul>
+            <p><strong>Descrizione:</strong></p>
+            <p>{{ movie.description }}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
