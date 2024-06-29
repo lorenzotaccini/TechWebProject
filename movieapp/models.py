@@ -19,6 +19,7 @@ class Movie(models.Model):
     def poster_url(self):
         api_key = '5dbf33ab1210565bba9d880c176bf3d8'
         base_url = f'https://api.themoviedb.org/3/movie/{self.tmdb_id}?api_key={api_key}'
+
     '''
         try:
             response = requests.get(base_url)
@@ -35,7 +36,6 @@ class Movie(models.Model):
             print('Error in API request:', e)
             return None
     '''
-
 
     def __str__(self):
         return f"{self.title} - {self.tmdb_id}"
@@ -75,7 +75,6 @@ class Request(models.Model):
 
     def __str__(self):
         return f"{self.profile} has requested {self.movie} at time {self.request_date}"
-
 
     class Meta:
         ordering = ["-request_date"]

@@ -29,7 +29,7 @@
             width: 500px; /* Adjust as needed */
         }
         .footer {
-            background-color: #f8f9fa; /* Footer background color */
+            background-color: rgb(159, 159, 159); /* Footer background color */
             padding: 20px 0;
             text-align: center;
             margin-top: auto;
@@ -46,12 +46,12 @@
 
     </style>
     {% load crispy_forms_tags %}
-    {% load auth_extras %}
+
 </head>
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark">
     <a class="navbar-brand" href="{% url 'movieapp:home' %}">Media Request Service</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
         aria-expanded="false" aria-label="Toggle navigation">
@@ -59,9 +59,6 @@
     </button>
     <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">About</a>
             </li>
@@ -77,31 +74,45 @@
             <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
         </form>
     
+        <ul class="navbar-nav">
+            {% if not request.user.is_authenticated %}
+            <li class="nav-item">
+                <span class="nav-link disabled">Anonymous User</span>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <span class="nav-link">{{ request.user.username }} - {{ user.groups.all.0.name }}</span>
+            </li>
+            {% endif %}
+        </ul>
+    
         {% if request.user.is_authenticated %}
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <span class="nav-link">{{ request.user.username }}</span>
-            </li>
+
             <li class="nav-item">
                 <form id="logout-form" method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-outline-light ml-2">Logout</button>
                 </form>
             </li>
+            {% if user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'mregister' %}"><i class="fas fa-user"></i>Create New Moderator</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'movieapp:edit_profile' %}"><i class="fas fa-user"></i>Edit profile</a>
+            </li>
         </ul>
         {% else %}
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <span class="nav-link disabled">Anonymous User</span>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" href={% url 'login' %}><i class="fas fa-user"></i>Login</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'rregister' %}"><i class="fas fa-user"></i>Sign-up</a>
             </li>
-            {% if request.user | has_group:"moderator" %}
-                {% endif %}
+
         </ul>            
         {% endif %}
     </div>

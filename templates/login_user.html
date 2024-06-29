@@ -9,9 +9,8 @@
 <div class="alert alert-danger" role="alert">
   Si è arrivati qui in quanto non si dispone dei permessi necessari per il servizio scelto!
 </div>
-{% endif %}
     
-{% if request.user.is_authenticated %}
+{% elif request.user.is_authenticated %}
     <div class="alert alert-danger" role="alert">
         you are already logged in! Log out first.
     </div>
