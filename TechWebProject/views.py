@@ -31,7 +31,7 @@ def login_user(request):
             return redirect('/?login=ok')
         else:
             #messages.error(request, "There was an error logging in... Please try again.")
-            return redirect('login')
+            return render(request,'login_user.html', context={'error_msg': "Login failed. Check username and password."})
 
     else:
         return render(request, "login_user.html")

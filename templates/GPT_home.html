@@ -79,6 +79,10 @@
             <li class="nav-item">
                 <span class="nav-link disabled">Anonymous User</span>
             </li>
+            {% elif user.is_superuser %}
+            <li class="nav-item">
+                <span class="nav-link">{{ request.user.username }} - ADMIN</span>
+            </li>
             {% else %}
             <li class="nav-item">
                 <span class="nav-link">{{ request.user.username }} - {{ user.groups.all.0.name }}</span>
