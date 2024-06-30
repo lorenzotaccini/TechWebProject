@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DetailView
 
-from .forms import UpdateUserForm, UpdateProfileForm, MovieRequestForm
+from .forms import UpdateUserForm, UpdateProfileForm
 from .models import Movie, Profile, Request
 from django.views.generic import ListView
 
@@ -31,6 +31,29 @@ class MovieDetailView(DetailView):
     def get_my_page(self):
         return self.kwargs.get('page')
 
+    def already_requested_by_user(self) -> bool:
+        return Request.objects.filter(pk=self.kwargs.get('pk')).exists()
+
+    @login_required
+    def post(self, request, *args, **kwargs):
+        # Recupera il film dalla tabella Movie
+        movie = get_object_or_404(Movie, pk=self.kwargs.get('tmdb_id'))
+        print(movie)
+        # Recupera il profilo dell'utente loggato
+        user_profile = Profile.objects.get(pk=self.kwargs.get('pk'))
+        print(user_profile)
+
+        if not Request.objects.filter(profile=profile, movie=movie).exists():
+            movie_request = Request.objects.create(profile=user_profile, movie=movie)
+            movie_request.save()
+            print(f'Movie {movie} request has been successfully submitted!')
+            print(request.path_info)
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            return render(request, 'movie_detail.html', {'already_requested': True})
+
+
+
 
 @login_required
 def profile(request):
@@ -48,7 +71,7 @@ def profile(request):
 
     return render(request, 'edit_profile.html', {'user_form': user_form, 'profile_form': profile_form})
 
-
+'''
 @login_required
 def request_movie(request, movie_id, prev_page):
     # Recupera il film dalla tabella Movie
@@ -56,11 +79,17 @@ def request_movie(request, movie_id, prev_page):
     # Recupera il profilo dell'utente loggato
     profile = Profile.objects.get(user=request.user)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and not Request.objects.filter(profile=profile, movie=movie).exists():
         # Crea una nuova richiesta
         movie_request = Request.objects.create(profile=profile, movie=movie)
         movie_request.save()
         print(f'Movie {movie_id} request has been successfully submitted!')
-        return redirect('movie_detail', movie_id=movie.id, page=prev_page)
+        print(request.path_info)
+        return render()
+    else:
+        # esiste già una request da parte di questo utente per questo film
+        pass
 
-    return redirect('movie_detail', movie_id=movie.id)'request_movie.html', {'form': form, 'movie': movie})
+
+    return redirect('movieapp:movie_detail', pk=movie.tmdb_id, page=prev_page)
+'''

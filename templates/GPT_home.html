@@ -81,7 +81,7 @@
             </li>
             {% elif user.is_superuser %}
             <li class="nav-item">
-                <span class="nav-link">{{ request.user.username }} - ADMIN</span>
+                <a class="nav-link" href="/admin/">{{ request.user.username }} - ADMIN</a>
             </li>
             {% else %}
             <li class="nav-item">

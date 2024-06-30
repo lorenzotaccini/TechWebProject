@@ -78,8 +78,11 @@ class Request(models.Model):
     request_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.profile} has requested {self.movie} at time {self.request_date}"
+        return f"{self.profile} requested {self.movie} at time {self.request_date}"
 
     class Meta:
         ordering = ["-request_date"]
         verbose_name_plural = 'Requests'
+        constraints = [
+            models.UniqueConstraint(fields=['profile', 'movie'], name='unique_profile_movie_request')
+        ]
