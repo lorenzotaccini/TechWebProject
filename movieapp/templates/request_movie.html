@@ -1,0 +1,10 @@
+{% extends "GPT_home.html" %}
+
+{% block content %}
+  <h2>Request Movie: {{ movie.title }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit" class="btn btn-primary">Request Movie</button>
+  </form>
+{% endblock %}

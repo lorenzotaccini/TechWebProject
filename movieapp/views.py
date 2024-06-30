@@ -1,12 +1,12 @@
 import requests
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserChangeForm
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DetailView
 
-from .forms import UpdateUserForm, UpdateProfileForm
-from .models import Movie, Profile
+from .forms import UpdateUserForm, UpdateProfileForm, MovieRequestForm
+from .models import Movie, Profile, Request
 from django.views.generic import ListView
 
 from .models import Movie
@@ -47,3 +47,20 @@ def profile(request):
         profile_form = UpdateProfileForm(instance=request.user.profile)
 
     return render(request, 'edit_profile.html', {'user_form': user_form, 'profile_form': profile_form})
+
+
+@login_required
+def request_movie(request, movie_id, prev_page):
+    # Recupera il film dalla tabella Movie
+    movie = get_object_or_404(Movie, pk=movie_id)
+    # Recupera il profilo dell'utente loggato
+    profile = Profile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        # Crea una nuova richiesta
+        movie_request = Request.objects.create(profile=profile, movie=movie)
+        movie_request.save()
+        print(f'Movie {movie_id} request has been successfully submitted!')
+        return redirect('movie_detail', movie_id=movie.id, page=prev_page)
+
+    return redirect('movie_detail', movie_id=movie.id)'request_movie.html', {'form': form, 'movie': movie})

@@ -19,6 +19,12 @@
             </ul>
             <p><strong>Descrizione:</strong></p>
             <p>{{ movie.description }}</p>
+
+            <a href="{% url 'movieapp:request_movie' movie.tmdb_id view.get_my_page%}" class="btn btn-primary">Request Movie</a>
+              <form id="request-movie-form" method="post" action="{% url 'movieapp:movie_detail' movie.tmdb_id view.get_my_page %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Request Movieeee</button>
+              </form>
         </div>
     </div>
 </div>
