@@ -1,8 +1,10 @@
 import requests
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserChangeForm
+from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
+from django.views.decorators.http import require_POST
 from django.views.generic import ListView, UpdateView, DetailView
 
 from .forms import UpdateUserForm, UpdateProfileForm
@@ -31,28 +33,19 @@ class MovieDetailView(DetailView):
     def get_my_page(self):
         return self.kwargs.get('page')
 
-    def already_requested_by_user(self) -> bool:
-        return Request.objects.filter(pk=self.kwargs.get('pk')).exists()
-
-    @login_required
-    def post(self, request, *args, **kwargs):
-        # Recupera il film dalla tabella Movie
-        movie = get_object_or_404(Movie, pk=self.kwargs.get('tmdb_id'))
-        print(movie)
-        # Recupera il profilo dell'utente loggato
-        user_profile = Profile.objects.get(pk=self.kwargs.get('pk'))
-        print(user_profile)
-
-        if not Request.objects.filter(profile=profile, movie=movie).exists():
-            movie_request = Request.objects.create(profile=user_profile, movie=movie)
-            movie_request.save()
-            print(f'Movie {movie} request has been successfully submitted!')
-            print(request.path_info)
-            return redirect(request.META.get('HTTP_REFERER'))
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_authenticated:
+            user_profile = get_object_or_404(Profile, user=user)
+            movie = self.get_object()
+            existing_request = Request.objects.filter(profile=user_profile, movie=movie).exists()
+            context['existing_request'] = existing_request
+            request_count = Request.objects.filter(movie=movie).count()
+            context['request_count'] = request_count
         else:
-            return render(request, 'movie_detail.html', {'already_requested': True})
-
-
+            context['existing_request'] = False
+        return context
 
 
 @login_required
@@ -71,25 +64,18 @@ def profile(request):
 
     return render(request, 'edit_profile.html', {'user_form': user_form, 'profile_form': profile_form})
 
-'''
+
 @login_required
-def request_movie(request, movie_id, prev_page):
-    # Recupera il film dalla tabella Movie
-    movie = get_object_or_404(Movie, pk=movie_id)
-    # Recupera il profilo dell'utente loggato
-    profile = Profile.objects.get(user=request.user)
+@require_POST
+def create_request_ajax(request, pk):
+    movie = get_object_or_404(Movie, pk=pk)
+    profile = get_object_or_404(Profile, user=request.user)
+    existing_request = Request.objects.filter(profile=profile, movie=movie).exists()
 
-    if request.method == 'POST' and not Request.objects.filter(profile=profile, movie=movie).exists():
-        # Crea una nuova richiesta
-        movie_request = Request.objects.create(profile=profile, movie=movie)
-        movie_request.save()
-        print(f'Movie {movie_id} request has been successfully submitted!')
-        print(request.path_info)
-        return render()
-    else:
-        # esiste già una request da parte di questo utente per questo film
-        pass
+    if existing_request:
+        return JsonResponse({'status': 'error', 'message': 'Request already exists.'}, status=400)
 
-
-    return redirect('movieapp:movie_detail', pk=movie.tmdb_id, page=prev_page)
-'''
+    new_request = Request(profile=profile, movie=movie)
+    new_request.save()
+    print(movie)
+    return JsonResponse({'status': 'success', 'message': 'Request sent successfully.'})

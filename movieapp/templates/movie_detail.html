@@ -1,5 +1,6 @@
 {% extends 'GPT_home.html' %}
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 {% block content %}
 
@@ -17,21 +18,70 @@
         <div class="col-md-8">
             <a href="{% url 'movieapp:home' %}?page={{ view.get_my_page }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> ◀ Back to list</a>
             <h1 class="mt-3">{{ movie.title }}</h1>
-            <p><strong>Anno:</strong> {{ movie.year }}</p>
-            <p><strong>Genere:</strong></p>
+            <p><strong>Production year:</strong> {{ movie.year }}</p>
+            <p><strong>Genre:</strong></p>
             <ul class="list-unstyled">
                 {% for g in movie.get_genre_as_list %}
                 <li>{{ g }}</li>
                 {% endfor %}
             </ul>
-            <p><strong>Descrizione:</strong></p>
+            <p><strong>Description:</strong></p>
             <p>{{ movie.description }}</p>
-            <form id="request-movie-form" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Request this Title</button>
-            </form>
+            {% if user.is_authenticated %}
+                <button class="btn btn-primary" id="request-movie-button" {% if existing_request %}disabled{% endif %}>
+                    {% if existing_request %}
+                        You have already requested this movie
+                    {% else %}
+                        Request this movie
+                    {% endif %}
+                </button>
+
+                <p id="request-status"></p>
+                <p id="requests-count">
+                    {% if not request_count %}
+                        Be the first to request this title!
+                    {% elif request_count == 1 and existing_request %}
+                        Only you requested this title... Niche movie?!
+                    {% elif existing_request %}
+                        {{ request_count }} people have requested this title, and you are one of them!
+                    {% elif not existing_request and request_count %}
+                        Other {{ request_count }} people have requested this title, be one of them!
+                    {% endif %}
+                </p>
+            <script>
+                $(document).ready(function() {
+                    $('#request-movie-button').click(function() {
+                        $.ajax({
+                            type: 'POST',
+                            url: "{% url 'movieapp:create_request_ajax' object.pk %}",
+                            data: {
+                                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                            },
+                            success: function(response) {
+                                if (response.status === 'success') {
+                                    $('#request-status').text(response.message).css('color', 'green');
+                                    $('#request-movie-button').prop('disabled', true);
+                                } else {
+                                    $('#request-status').text(response.message).css('color', 'red');
+                                }
+                            },
+                            error: function(response) {
+                                $('#request-status').text('An error occurred. Please try again.').css('color', 'red');
+                            }
+                        });
+                    });
+                });
+            </script>
+
+            {% else %}
+                <p><a href="{% url 'login' %}">Log in</a> to request this movie.</p>
+            {% endif %}
+
+
         </div>
     </div>
 </div>
+
+
 
 {% endblock %}
