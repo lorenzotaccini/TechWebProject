@@ -44,9 +44,16 @@
           -webkit-box-orient: vertical;
           margin: 20px auto;
         }
+        .navbar-img {
+          display: block;
+          max-width: 40%;
+          height: auto;
+          align-self: center;
+        }
 
     </style>
     {% load crispy_forms_tags %}
+    {% load static %}
 
 </head>
 <body>
@@ -160,16 +167,17 @@
                         Anonymous User
                     {% endif %}
                 </button>
-                <div class="dropdown-menu dropdown-menu-right p-3" aria-labelledby="userDropdown">
+                <div class="dropdown-menu dropdown-menu-right p-3 text-center" aria-labelledby="userDropdown">
                     {% if request.user.is_authenticated %}
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="{% if request.user.profile.propic %}{{ request.user.profile.propic.url }}{% else %}{% static 'unknown_user.png' %}{% endif %}" alt="Profile Picture">
+                    <div class="card text-center" style="width: 18rem;">
+                        <img class="navbar-img" src="{% static 'userdashboard/unknown_user.png' %}" alt="Profile Picture">
                         <div class="card-body text-center">
                             <h5 class="card-title">{{ request.user.username }}</h5>
                             <a href="{% url 'movieapp:edit_profile' %}" class="btn btn-primary mb-2">Dashboard</a>
                             <hr>
                             {% if user.is_superuser %}
                             <a href="{% url 'mregister' %}" class="btn btn-success mb-2">Create New Moderator</a>
+                            <a href="{% url 'admin:index' %}" class="btn btn-primary mb-2">Django Admin page</a>
                             {% endif %}
                             <form id="logout-form" method="post" action="{% url 'logout' %}">
                                 {% csrf_token %}
@@ -179,7 +187,7 @@
                     </div>
                     {% else %}
                         <a class="dropdown-item" href="{% url 'login' %}"><i class="fas fa-user"></i>Login</a>
-                        <a class="dropdown-item" href="{% url 'rregister' %}"><i class="fas fa-user"></i>Sign-up</a>
+                        <a class="dropdown-item" href="{% url 'admin' %}"><i class="fas fa-user"></i>Sign-up</a>
                     {% endif %}
                 </div>
             </li>
