@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +51,7 @@
 </head>
 <body>
 
+{% comment %}
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark">
     <a class="navbar-brand" href="{% url 'movieapp:home' %}">Media Request Service</a>
@@ -121,6 +123,70 @@
         {% endif %}
     </div>
 </nav>
+
+{% endcomment %}
+
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="{% url 'movieapp:home' %}">Media Request Service</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <button class="btn btn-sm btn-primary dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% if request.user.is_authenticated %}
+                        {{ request.user.username }} - {% if not user.is_superuser %}{{ user.groups.all.0.name }}{% else %}Administrator{% endif %}
+                    {% else %}
+                        Anonymous User
+                    {% endif %}
+                </button>
+                <div class="dropdown-menu dropdown-menu-right p-3" aria-labelledby="userDropdown">
+                    {% if request.user.is_authenticated %}
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="{% if request.user.profile.propic %}{{ request.user.profile.propic.url }}{% else %}{% static 'unknown_user.png' %}{% endif %}" alt="Profile Picture">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ request.user.username }}</h5>
+                            <a href="{% url 'movieapp:edit_profile' %}" class="btn btn-primary mb-2">Dashboard</a>
+                            <hr>
+                            {% if user.is_superuser %}
+                            <a href="{% url 'mregister' %}" class="btn btn-success mb-2">Create New Moderator</a>
+                            {% endif %}
+                            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
+                        <a class="dropdown-item" href="{% url 'login' %}"><i class="fas fa-user"></i>Login</a>
+                        <a class="dropdown-item" href="{% url 'rregister' %}"><i class="fas fa-user"></i>Sign-up</a>
+                    {% endif %}
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 
 {% if "ok" in request.GET.login or "ok" in request.GET.logout %}
 <div id="info" class="modal fade" tabindex="-1" role="dialog">
