@@ -7,7 +7,7 @@
     <div class="row">
         {% for movie in page_obj %}
         <div class="col-lg-3 col-md-4 mb-4">
-            <div class="card h-100">
+            <div class="card h-100" id="{{ movie.tmdb_id }}">
                 {% if movie.poster_url %}
                 <img src="{{ movie.poster_url }}" class="card-img-top" alt="Poster del film">
                 {% else %}
@@ -17,7 +17,8 @@
                     <h5 class="card-title text-truncate">{{ movie.title }} - {{ movie.year }}</h5>
                     <p class="card-text multi-line-text-truncate">{{ movie.description }}</p>
                     <div class="d-flex justify-content-between">
-                        <a href="{% url 'movieapp:movie_detail' movie.pk page_obj.number %}" class="btn btn-secondary stretched-link btn-sm">View Details</a>
+                        <a href="{% url 'movieapp:movie_detail' movie.pk page_obj.number %}" class="btn btn-secondary btn-sm">View Details</a>
+                        <a class="watchlist-btn" data-movie-id="{{ movie.tmdb_id }}" class="btn btn-secondary btn-sm">{{ movie.tmdb_id }} Add to Watchlist</a>
                     </div>
                 </div>
             </div>
@@ -63,5 +64,30 @@
     </nav>
 
 </div>
+
+<script>
+$(document).ready(function() {
+$('.watchlist-btn').click( function (){
+        var icon = $(this)
+        var movie_id = $(this).attr('data-movie-id')
+        console.log(movie_id)
+        $.ajax({
+            url:  {% url 'movieapp:add_movie_to_watchlist' %},
+            type: 'POST',
+            data: {
+                movie_id: movie_id,
+                csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
+            },
+            success: function(response) {
+                icon.toggleClass('watchlist');
+            },
+            error: function(xhr, status, error) {
+                console.log('Errore:', error);
+                alert('An error occured, try again later.');
+            }
+        });
+});
+});
+</script>
 
 {% endblock %}

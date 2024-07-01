@@ -79,3 +79,15 @@ def create_request_ajax(request, pk):
     new_request.save()
     print(movie)
     return JsonResponse({'status': 'success', 'message': 'Request sent successfully.'})
+
+
+@require_POST
+def add_movie_to_watchlist(request):
+    movie = get_object_or_404(Movie, tmdb_id=request.POST.get('movie_id'))
+    user_profile = get_object_or_404(Profile, user=request.user)
+    if user_profile.watchlisted.filter(tmdb_id=request.POST.get('movie_id')).exists():
+        user_profile.watchlisted.remove(request.user.id)
+        return JsonResponse({'status': 'ok'})
+    else:
+        user_profile.watchlisted.add(request.user.id)
+        return JsonResponse({'status': 'ok'})
