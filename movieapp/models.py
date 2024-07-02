@@ -50,7 +50,7 @@ class Movie(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
     propic = models.ImageField(
         upload_to='users_pics',
         default=join('static', 'unknown_user.png'),
@@ -72,8 +72,8 @@ class Request(models.Model):
         (REJECTED, 'Request has been rejected'),
         (PENDING, 'Request not yet evaluated')
     ]
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, related_name='profile', on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, related_name='movie', on_delete=models.CASCADE)
     status = models.CharField(choices=STATUS, default=PENDING, max_length=8)
     request_date = models.DateTimeField(auto_now_add=True)
 

@@ -7,5 +7,5 @@ from . import views
 app_name= "userdashboard"
 
 urlpatterns = [
-
+    path('watchlist/', views.my_watchlist, name='my_watchlist'),
 ]

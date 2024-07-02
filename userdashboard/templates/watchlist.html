@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
-</body>
-</html>
+{% extends 'GPT_home.html' %}
+{%  csrf_token %}
+{% block content %}
+
+
+<div class="container mt-4">
+    <h2>La tua Watchlist</h2>
+    <ul class="list-group">
+        {% for movie in watchlist_movies %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                {% if movie.poster_url %}
+                <img src="{{ movie.poster_url }}" class="img-thumbnail mr-3" alt="Poster del film" style="width: 50px; height: 75px;">
+                {% else %}
+                <img src="https://via.placeholder.com/50x75" class="img-thumbnail mr-3" alt="Immagine non disponibile">
+                {% endif %}
+                <div>
+                    <h5>{{ movie.title }} - {{ movie.year }}</h5>
+                    <p class="mb-1 multi-line-text-truncate">{{ movie.description }}</p>
+                </div>
+            </div>
+            <button class="btn btn-sm btn-danger toggle-watchlist" data-movie-id="{{ movie.id }}" data-action="remove">Remove from Watchlist</button>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

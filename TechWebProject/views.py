@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
@@ -25,13 +25,17 @@ def login_user(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+        redirect_to = request.GET.get('next', '')
+        print(redirect_to)
         if user is not None:
             login(request, user)
+            if redirect_to:
+                return HttpResponseRedirect(redirect_to)
             #messages.success(request, f"Hi {username}, you are now logged in! Welcome back.")
             return redirect('/?login=ok')
         else:
             #messages.error(request, "There was an error logging in... Please try again.")
-            return render(request,'login_user.html', context={'error_msg': "Login failed. Check username and password."})
+            return render(request, 'login_user.html', context={'error_msg': "Login failed. Check username and password."})
 
     else:
         return render(request, "login_user.html")

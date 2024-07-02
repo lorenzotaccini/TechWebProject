@@ -173,7 +173,7 @@
                         <img class="navbar-img" src="{% static 'userdashboard/unknown_user.png' %}" alt="Profile Picture">
                         <div class="card-body text-center">
                             <h5 class="card-title">{{ request.user.username }}</h5>
-                            <a href="{% url 'movieapp:edit_profile' %}" class="btn btn-primary mb-2">Dashboard</a>
+                            <a href="{% url 'userdashboard:my_watchlist' %}" class="btn btn-primary mb-2">Dashboard</a>
                             <hr>
                             {% if user.is_superuser %}
                             <a href="{% url 'mregister' %}" class="btn btn-success mb-2">Create New Moderator</a>
@@ -250,6 +250,5 @@
 <!-- Bootstrap JS and dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
 </html>

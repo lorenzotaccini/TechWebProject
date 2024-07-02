@@ -18,7 +18,11 @@
                     <p class="card-text multi-line-text-truncate">{{ movie.description }}</p>
                     <div class="d-flex justify-content-between">
                         <a href="{% url 'movieapp:movie_detail' movie.pk page_obj.number %}" class="btn btn-secondary btn-sm">View Details</a>
-                        <a class="watchlist-btn" data-movie-id="{{ movie.tmdb_id }}" class="btn btn-secondary btn-sm">{{ movie.tmdb_id }} Add to Watchlist</a>
+                        {% if movie in request.user.profile.watchlisted.all %}
+                        	<a class="watchlist-btn btn btn-secondary btn-sm" data-movie-id="{{ movie.tmdb_id }}">Remove to Watchlist</a>
+                        {% else %}
+                            <a class="watchlist-btn btn btn-secondary btn-sm" data-movie-id="{{ movie.tmdb_id }}">Add to Watchlist</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -70,7 +74,6 @@ $(document).ready(function() {
 $('.watchlist-btn').click( function (){
         var icon = $(this)
         var movie_id = $(this).attr('data-movie-id')
-        console.log(movie_id)
         $.ajax({
             url:  {% url 'movieapp:add_movie_to_watchlist' %},
             type: 'POST',
@@ -79,7 +82,8 @@ $('.watchlist-btn').click( function (){
                 csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
             },
             success: function(response) {
-                icon.toggleClass('watchlist');
+                if(icon.text()==='Add to Watchlist') icon.text('Remove to Watchlist');
+                else icon.text('Add to Watchlist')
             },
             error: function(xhr, status, error) {
                 console.log('Errore:', error);

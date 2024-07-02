@@ -15,8 +15,9 @@
         <div class="col-md-4">
             <img src="{{ movie.poster_url }}" class="img-fluid rounded-lg" alt="{{ movie.title }}">
         </div>
+
         <div class="col-md-8">
-            <a href="{% url 'movieapp:home' %}?page={{ view.get_my_page }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> ◀ Back to list</a>
+            <a href="{% url 'movieapp:home' %}?page={{ view.get_my_page }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> ◀ Back </a>
             <h1 class="mt-3">{{ movie.title }}</h1>
             <p><strong>Production year:</strong> {{ movie.year }}</p>
             <p><strong>Genre:</strong></p>
@@ -30,7 +31,7 @@
             {% if user.is_authenticated %}
                 <button class="btn btn-primary" id="request-movie-button" {% if existing_request %}disabled{% endif %}>
                     {% if existing_request %}
-                        You have already requested this movie
+                        You have already requested this movie, request status is: {{ movie_request.get_status_display }}
                     {% else %}
                         Request this movie
                     {% endif %}
@@ -74,7 +75,7 @@
             </script>
 
             {% else %}
-                <p><a href="{% url 'login' %}">Log in</a> to request this movie.</p>
+                <p><a href="{% url 'login' %}">Log in</a> to request this movie or to see its status.</p>
             {% endif %}
 
 

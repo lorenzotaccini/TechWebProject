@@ -21,7 +21,6 @@ class MovieListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Titolo Dinamico della Lista'
         context['movie_list'] = Movie.objects.all()
         return context
 
@@ -43,12 +42,13 @@ class MovieDetailView(DetailView):
             context['existing_request'] = existing_request
             request_count = Request.objects.filter(movie=movie).count()
             context['request_count'] = request_count
+            context['movie_request'] = Request.objects.filter(profile=user_profile, movie=movie).first()
         else:
             context['existing_request'] = False
         return context
 
 
-@login_required
+@login_required(login_url='/login')
 def profile(request):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
@@ -65,7 +65,7 @@ def profile(request):
     return render(request, 'edit_profile.html', {'user_form': user_form, 'profile_form': profile_form})
 
 
-@login_required
+@login_required(login_url='/login')
 @require_POST
 def create_request_ajax(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
@@ -82,12 +82,13 @@ def create_request_ajax(request, pk):
 
 
 @require_POST
+@login_required
 def add_movie_to_watchlist(request):
     movie = get_object_or_404(Movie, tmdb_id=request.POST.get('movie_id'))
     user_profile = get_object_or_404(Profile, user=request.user)
     if user_profile.watchlisted.filter(tmdb_id=request.POST.get('movie_id')).exists():
-        user_profile.watchlisted.remove(request.user.id)
+        user_profile.watchlisted.remove(movie)
         return JsonResponse({'status': 'ok'})
     else:
-        user_profile.watchlisted.add(request.user.id)
+        user_profile.watchlisted.add(movie)
         return JsonResponse({'status': 'ok'})
