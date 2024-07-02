@@ -14,7 +14,6 @@ class UserCreateView(CreateView):
 
 
 class ModeratorCreateView(SuperuserRequiredMixin, CreateView):
-    group_required = "Moderator"
     form_class = CreateModeratorForm
     template_name = "moderator_create.html"
     success_url = reverse_lazy("movieapp:home")

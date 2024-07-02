@@ -1,8 +1,6 @@
-
 {% extends 'GPT_home.html' %}
-{%  csrf_token %}
+{% csrf_token %}
 {% block content %}
-
 
 <div class="container mt-4">
     <h2>La tua Watchlist</h2>
@@ -16,14 +14,74 @@
                 <img src="https://via.placeholder.com/50x75" class="img-thumbnail mr-3" alt="Immagine non disponibile">
                 {% endif %}
                 <div>
-                    <h5>{{ movie.title }} - {{ movie.year }}</h5>
+                    <h5>{{ movie.title }} - {{ movie.year }} - {{ movie.tmdb_id }}</h5>
                     <p class="mb-1 multi-line-text-truncate">{{ movie.description }}</p>
                 </div>
             </div>
-            <button class="btn btn-sm btn-danger toggle-watchlist" data-movie-id="{{ movie.id }}" data-action="remove">Remove from Watchlist</button>
+            <button class="btn btn-sm btn-danger watchlist-btn" data-movie-id="{{ movie.tmdb_id }}" data-action="remove">Remove from Watchlist</button>
         </li>
         {% endfor %}
     </ul>
+
+    <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        {% if watchlist_movies.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="First">
+                <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ watchlist_movies.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+        {% for num in watchlist_movies.paginator.page_range %}
+        {% if watchlist_movies.number == num %}
+        <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+        {% elif num > watchlist_movies.number|add:'-3' and num < watchlist_movies.number|add:'3' %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if watchlist_movies.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ watchlist_movies.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ watchlist_movies.paginator.num_pages }}" aria-label="Last">
+                <span aria-hidden="true">&raquo;&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
 </div>
+<script>
+$(document).ready(function() {
+    $('.watchlist-btn').click(function() {
+        var icon = $(this);
+        var movie_id = $(this).attr('data-movie-id');
+        $.ajax({
+            url: '{% url "movieapp:add_movie_to_watchlist" %}',
+            type: 'POST',
+            data: {
+                movie_id: movie_id,
+                csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
+            },
+            success: function(response) {
+                if (icon.text() === 'Add to Watchlist') icon.text('Remove from Watchlist');
+                else icon.text('Add to Watchlist');
+            },
+            error: function(xhr, status, error) {
+                console.log('Errore:', error);
+                alert('An error occurred, try again later.');
+            }
+        });
+    });
+});
+</script>
 
 {% endblock %}

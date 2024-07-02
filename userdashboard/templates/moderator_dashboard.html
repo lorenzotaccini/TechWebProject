@@ -1,0 +1,121 @@
+{% extends 'GPT_home.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Moderator Dashboard</h2>
+    <ul class="list-group">
+        {% for request in requests %}
+        <li class="list-group-item">
+            <div class="row align-items-center">
+                <div class="col-md-9">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                            {% if request.movie.poster_url %}
+                            <img src="{{ request.movie.poster_url }}" class="img-thumbnail" alt="Poster del film" style="width: 75px; height: 100px;">
+                            {% else %}
+                            <img src="https://via.placeholder.com/75x100" class="img-thumbnail" alt="Immagine non disponibile">
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h5 class="mb-1">{{ request.movie.title }} </h5>
+                            <small class="text-muted">Requested on {{ request.request_date|date:"j F Y" }}</small>
+                            <p class="mb-1 multi-line-text-truncate">{{ request.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 text-md-right mt-3 mt-md-0">
+                    <span class="badge badge-info">{{ request.get_status_display }}</span>
+                    <button class="btn btn-sm btn-success accept-btn ml-2" data-request-id="{{ request.id }}">Accept</button>
+                    <button class="btn btn-sm btn-danger reject-btn ml-2" data-request-id="{{ request.id }}">Reject</button>
+                </div>
+            </div>
+        </li>
+        {% empty %}
+        <li class="list-group-item">
+            No requests found.
+        </li>
+        {% endfor %}
+    </ul>
+
+    <nav aria-label="Page navigation" class="fixed-bottom">
+        <ul class="pagination justify-content-center">
+            {% if is_paginated %}
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('.accept-btn').click(function() {
+        var request_id = $(this).attr('data-request-id');
+        $.ajax({
+            url: '{% url "app_name:accept_request" %}',
+            type: 'POST',
+            data: {
+                request_id: request_id,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+                location.reload();  // Ricarica la pagina per riflettere i cambiamenti
+            },
+            error: function(xhr, status, error) {
+                console.log('Errore:', error);
+                alert('An error occurred, try again later.');
+            }
+        });
+    });
+
+    $('.reject-btn').click(function() {
+        var request_id = $(this).attr('data-request-id');
+        $.ajax({
+            url: '{% url "app_name:reject_request" %}',
+            type: 'POST',
+            data: {
+                request_id: request_id,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+                location.reload();  // Ricarica la pagina per riflettere i cambiamenti
+            },
+            error: function(xhr, status, error) {
+                console.log('Errore:', error);
+                alert('An error occurred, try again later.');
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

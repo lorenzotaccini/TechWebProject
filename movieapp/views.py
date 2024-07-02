@@ -19,11 +19,6 @@ class MovieListView(ListView):
     template_name = 'movie_list.html'
     paginate_by = 5
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['movie_list'] = Movie.objects.all()
-        return context
-
 
 class MovieDetailView(DetailView):
     model = Movie

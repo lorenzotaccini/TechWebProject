@@ -9,16 +9,17 @@
     {{ error_msg }}
 </div>
 {% endif %}
-{% if "notok" in request.GET.auth %}
-<div class="alert alert-danger" role="alert">
-  Si è arrivati qui in quanto non si dispone dei permessi necessari per il servizio scelto!
-</div>
     
-{% elif request.user.is_authenticated %}
+{% if request.user.is_authenticated %}
     <div class="alert alert-danger" role="alert">
         you are already logged in! Log out first.
     </div>
 {% else %}
+    {% if "notok" in request.GET.auth %}
+        <div class="alert alert-danger" role="alert">
+            You are not allowed to visit this page. Please login as an authorized user.
+        </div>
+    {% endif %}
     <form method="POST" action="{% url 'login' %}"> {% csrf_token %}
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -26,12 +27,16 @@
                 <h2>Registered User Login</h2>
                 <br>
                     <div class="form-group">
-                       
-                        <input type="text" class="form-control" name="username" placeholder="Enter username">
+
+                        <label> Username:
+                            <input type="text" class="form-control" name="username" placeholder="Enter username">
+                        </label>
                     </div>
                     <div class="form-group">
-                        
-                        <input type="password" class="form-control" name="password" placeholder="Enter password">
+
+                        <label> Password:
+                            <input type="password" class="form-control" name="password" placeholder="Enter password">
+                        </label>
                     </div>
                     <button type="submit" class="btn btn-primary">Login</button>
             </div>
