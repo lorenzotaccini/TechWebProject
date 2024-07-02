@@ -16,12 +16,16 @@
                 <div class="card-body">
                     <h5 class="card-title text-truncate">{{ movie.title }} - {{ movie.year }}</h5>
                     <p class="card-text multi-line-text-truncate">{{ movie.description }}</p>
-                    <div class="d-flex justify-content-between">
-                        <a href="{% url 'movieapp:movie_detail' movie.pk page_obj.number %}" class="btn btn-secondary btn-sm">View Details</a>
-                        {% if movie in request.user.profile.watchlisted.all %}
-                        	<a class="watchlist-btn btn btn-secondary btn-sm" data-movie-id="{{ movie.tmdb_id }}">Remove to Watchlist</a>
-                        {% else %}
-                            <a class="watchlist-btn btn btn-secondary btn-sm" data-movie-id="{{ movie.tmdb_id }}">Add to Watchlist</a>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'movieapp:movie_detail' movie.pk page_obj.number %}" class="btn btn-primary">View Details</a>
+                        {% if request.user.is_authenticated %}
+                            {% if movie in request.user.profile.watchlisted.all %}
+                                <button class="watchlist-btn btn btn-danger btn-sm ml-2" data-movie-id="{{ movie.tmdb_id }}">Remove from Watchlist</button>
+                            {% else %}
+                                <button class="watchlist-btn btn btn-success btn-sm ml-2" data-movie-id="{{ movie.tmdb_id }}">Add to Watchlist</button>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
@@ -36,26 +40,40 @@
 
 <script>
 $(document).ready(function() {
-$('.watchlist-btn').click( function (){
-        var icon = $(this)
-        var movie_id = $(this).attr('data-movie-id')
+    $('.card').click(function(e) {
+        // Check if the click was on a button inside the card
+        if ($(e.target).is('a') || $(e.target).is('button')) {
+            return; // Do nothing if clicked on a link or button
+        }
+        // Otherwise, navigate to the movie detail page
+        var url = $(this).find('a.btn-primary').attr('href');
+        window.location = url;
+    });
+
+    $('.watchlist-btn').click(function(e) {
+        e.stopPropagation(); // Prevent card click event propagation
+        var icon = $(this);
+        var movie_id = icon.attr('data-movie-id');
         $.ajax({
-            url:  {% url 'movieapp:add_movie_to_watchlist' %},
+            url: "{% url 'movieapp:add_movie_to_watchlist' %}",
             type: 'POST',
             data: {
                 movie_id: movie_id,
                 csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
             },
             success: function(response) {
-                if(icon.text()==='Add to Watchlist') icon.text('Remove to Watchlist');
-                else icon.text('Add to Watchlist')
+                if (icon.hasClass('btn-success')) {
+                    icon.removeClass('btn-success').addClass('btn-danger').text('Remove from Watchlist');
+                } else {
+                    icon.removeClass('btn-danger').addClass('btn-success').text('Add to Watchlist');
+                }
             },
             error: function(xhr, status, error) {
-                console.log('Errore:', error);
-                alert('An error occured, try again later.');
+                console.log('Error:', error);
+                alert('An error occurred, try again later.');
             }
         });
-});
+    });
 });
 </script>
 

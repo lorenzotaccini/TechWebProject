@@ -10,7 +10,9 @@ from movieapp.views import MovieListView
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-
+@login_required
+def user_dashboard(request):
+    return render(request, 'user_dashboard.html')
 @login_required(login_url='/login')
 def my_watchlist(request):
     user_profile = request.user.profile
@@ -45,7 +47,7 @@ class ModeratorDashboard(GroupRequiredMixin, ListView):
     group_required = 'Moderator'
     model = Movie
     template_name = 'moderator_dashboard.html'
-    paginate_by = 10
+    paginate_by = 5
 
     def get_queryset(self):
         # Seleziona solo i film per cui esiste almeno una Request

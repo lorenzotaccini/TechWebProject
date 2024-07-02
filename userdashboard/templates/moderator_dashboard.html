@@ -5,23 +5,24 @@
     <h2>Movies with Requests</h2>
     <ul class="list-group mt-3">
         {% for movie in page_obj %}
-        <li class="list-group-item">
+        <li class="list-group-item mb-3">
             <div class="row align-items-center">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     {% if movie.poster_url %}
                     <img src="{{ movie.poster_url }}" class="img-thumbnail" alt="Poster del film" style="width: 100%;">
                     {% else %}
                     <img src="https://via.placeholder.com/154x231" class="img-thumbnail" alt="Immagine non disponibile" style="width: 100%;">
                     {% endif %}
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-10">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="mb-1">{{ movie.title }}</h5>
-                            <p class="mb-1 multi-line-text-truncate">{{ movie.description }}</p>
                             <small class="text-muted">Genre: {{ movie.get_genre_as_list }}</small>
                         </div>
                         <div class="text-right">
+                            <button class="btn btn-success btn-sm mr-2" data-movie-id="{{ movie.pk }}" data-action="approve">Approve</button>
+                            <button class="btn btn-danger btn-sm" data-movie-id="{{ movie.pk }}" data-action="reject">Reject</button>
                         </div>
                     </div>
                     <hr>
@@ -32,8 +33,11 @@
                             <div class="row align-items-center">
                                 <div class="col-md-9">
                                     <div>
-                                        <h6 class="mb-1">{{ req.profile.user }}, on {{ req.request_date | date:'j F Y' }} </h6>
+                                        <h6>{{ req.profile.user }}</h6>
                                     </div>
+                                </div>
+                                <div class="col-md-3 text-right">
+                                    <small class="text-muted">{{ req.request_date | date:'j F Y' }}</small>
                                 </div>
                             </div>
                         </li>

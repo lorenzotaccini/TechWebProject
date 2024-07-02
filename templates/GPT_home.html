@@ -142,17 +142,16 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Services</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
-            </li>
-        </ul>
+        {% if request.user.is_authenticated %}
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'userdashboard:my_watchlist' %}">Watchlist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'userdashboard:my_requests' %}">My Requests</a>
+                </li>
+            </ul>
+        {% endif %}
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
@@ -173,7 +172,7 @@
                         <img class="navbar-img" src="{% static 'userdashboard/unknown_user.png' %}" alt="Profile Picture">
                         <div class="card-body text-center">
                             <h5 class="card-title">{{ request.user.username }}</h5>
-                            <a href="{% url 'userdashboard:my_requests' %}" class="btn btn-primary mb-2">Dashboard</a>
+                            <a href="{% url 'userdashboard:user_dashboard' %}" class="btn btn-primary mb-2">Dashboard</a>
                             <hr>
                             {% if user.is_superuser %}
                             <a href="{% url 'mregister' %}" class="btn btn-success mb-2">Create New Moderator</a>
