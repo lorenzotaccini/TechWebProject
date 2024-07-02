@@ -56,7 +56,7 @@ class Profile(models.Model):
         default=join('static', 'unknown_user.png'),
         blank=True
     )
-    requests = models.ManyToManyField(Movie, through='Request', blank=True, related_name='requests', default=None)
+    requests = models.ManyToManyField(Movie, through='Request', blank=True, related_name='requested_by', default=None)
     watchlisted = models.ManyToManyField(Movie, blank=True, related_name='watchlisted', default=None)
 
     def __str__(self):

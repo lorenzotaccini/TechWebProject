@@ -43,7 +43,12 @@ class MyRequests(LoginRequiredMixin, ListView):
 
 class ModeratorDashboard(GroupRequiredMixin, ListView):
     group_required = 'Moderator'
-    model = Request
+    model = Movie
     template_name = 'moderator_dashboard.html'
     paginate_by = 10
-    ordering = ['-request_date']
+
+    def get_queryset(self):
+        # Seleziona solo i film per cui esiste almeno una Request
+        return Movie.objects.filter(requested_by__isnull=False).distinct()
+
+
