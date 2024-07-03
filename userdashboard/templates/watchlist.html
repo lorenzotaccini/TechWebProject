@@ -14,7 +14,7 @@
                 <img src="https://via.placeholder.com/50x75" class="img-thumbnail mr-3" alt="Immagine non disponibile">
                 {% endif %}
                 <div>
-                    <h5>{{ movie.title }} - {{ movie.year }}</h5>
+                    <a href="{% url 'movieapp:movie_detail_nopage' movie.pk %}"><h5>{{ movie.title }} - {{ movie.year }}</h5></a>
                     <p class="mb-1 multi-line-text-truncate">{{ movie.description }}</p>
                 </div>
             </div>

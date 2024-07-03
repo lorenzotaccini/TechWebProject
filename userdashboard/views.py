@@ -20,6 +20,7 @@ def user_dashboard(request):
 
 @login_required(login_url='/login')
 def my_watchlist(request):
+
     user_profile = request.user.profile
     watchlist_movies = user_profile.watchlisted.all()
 
@@ -61,6 +62,7 @@ class ModeratorDashboard(GroupRequiredMixin, ListView):
 
 def is_moderator_or_higher(user):
     return user.groups.filter(name='Moderator').exists() or user.is_superuser
+
 
 
 @user_passes_test(is_moderator_or_higher)

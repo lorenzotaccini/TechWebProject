@@ -17,7 +17,11 @@
         </div>
 
         <div class="col-md-8">
-            <a href="{% url 'movieapp:home' %}?page={{ view.get_my_page }}" class="btn btn-secondary mb-3"><i class="fas fa-arrow-left"></i> ◀ Back </a>
+            {% if back_btn %}
+                <a href="{% url 'movieapp:home' %}?page={{ view.get_my_page }}" class="btn btn-secondary mb-3"><i class="fas fa-arrow-left"></i> ◀ Back </a>
+            {% else %}
+                <a href="{{ prev_page }}" class="btn btn-secondary mb-3"><i class="fas fa-arrow-left"></i> ◀ Back </a>
+            {% endif %}
             <h1 class="mt-3">{{ movie.title }}</h1>
             <p><strong>Production year:</strong> {{ movie.year }}</p>
             <p><strong>Genre:</strong></p>

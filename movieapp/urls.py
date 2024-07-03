@@ -7,6 +7,7 @@ app_name = "movieapp"
 urlpatterns = [
     path(r'', MovieListView.as_view(), name='home'),
     path('movie/<int:pk>/<int:page>/', MovieDetailView.as_view(), name='movie_detail'),
+    path('movie/<int:pk>/', MovieDetailView.as_view(), name='movie_detail_nopage'),
     path('edit_profile/', profile, name='edit_profile'),
     path('movie/<int:pk>/request/', create_request_ajax, name='create_request_ajax'),
     path('movie/<int:pk>/remove/', remove_request_ajax, name='remove_request_ajax'),

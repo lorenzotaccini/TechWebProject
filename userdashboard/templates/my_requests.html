@@ -18,7 +18,7 @@
                             {% endif %}
                         </div>
                         <div>
-                            <h5 class="mb-1">{{ request.movie.title }} </h5>
+                            <a href="{% url 'movieapp:movie_detail_nopage' request.movie.pk %}"><h5>{{ request.movie.title }} - {{ request.movie.year }}</h5></a>
                             <small class="text-muted">made on {{ request.request_date|date:"j F Y" }}</small>
                             <p class="mb-1 multi-line-text-truncate">{{ request.description }}</p>
 

@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 import requests
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserChangeForm
@@ -28,7 +30,13 @@ class MovieDetailView(DetailView):
         return self.kwargs.get('page')
 
     def get_context_data(self, **kwargs):
+        parsed_url = urlparse(self.request.META.get('HTTP_REFERER'))
         context = super().get_context_data(**kwargs)
+        if parsed_url.path == '/':
+            context['back_btn'] = True
+        else:
+            context['back_btn'] = False
+            context['prev_page'] = self.request.META.get('HTTP_REFERER')
         user = self.request.user
         if user.is_authenticated:
             user_profile = get_object_or_404(Profile, user=user)
