@@ -21,19 +21,52 @@
                             <h5 class="mb-1">{{ request.movie.title }} </h5>
                             <small class="text-muted">made on {{ request.request_date|date:"j F Y" }}</small>
                             <p class="mb-1 multi-line-text-truncate">{{ request.description }}</p>
+
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 text-md-right mt-3 mt-md-0">
-                    <span class="badge badge-info">{{ request.get_status_display }}</span>
-                    <button class="btn btn-sm btn-danger request-btn ml-2" data-request-id="{{ request.id }}" data-action="remove">Remove</button>
+                    <span class="badge badge-info request-status">{{ request.get_status_display }}</span>
+                    <button class="btn btn-sm btn-danger request-btn ml-2 remove-request-button" data-request-id="{{ request.id }}" data-movie-id="{{ request.movie.tmdb_id }}" data-action="remove">Remove</button>
                 </div>
             </div>
         </li>
+           {% include 'navigation/pagination_buttons.html' %}
+        {% empty %}
+            <div class="alert alert-success d-flex justify-content-center align-items-center" role="alert">
+                <span class="text-center font-weight-bold" style="font-size: 1.5em;">Look's like no one's here...</span>
+            </div>
         {% endfor %}
     </ul>
 
-   {% include 'navigation/pagination_buttons.html' %}
 </div>
+<script>
+    $(document).ready(function() {
+        $('.remove-request-button').click(function() {
+            var button = $(this)
+            var movie_id = $(this).attr('data-movie-id')
+            var requestStatus = button.closest('.row').find('.request-status');
+            console.log(movie_id)
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'movieapp:remove_request_ajax_noparam' %}",
+                data: {
+                    movie_id: movie_id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        button.text('Removed');
+                        requestStatus.hide()
+                    }
+                },
+                error: function(response) {
+                    requestStatus.show()
+                    requestStatus.text('An error occurred. Please try again.').css('color', 'red');
+                }
+            });
+        });
+    });
+</script>
 
 {% endblock %}

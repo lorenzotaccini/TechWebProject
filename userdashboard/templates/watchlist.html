@@ -20,6 +20,10 @@
             </div>
             <button class="btn btn-sm btn-danger watchlist-btn" data-movie-id="{{ movie.tmdb_id }}" data-action="remove">Remove from Watchlist</button>
         </li>
+        {% empty %}
+            <div class="alert alert-success d-flex justify-content-center align-items-center" role="alert">
+                <span class="text-center font-weight-bold" style="font-size: 1.5em;">Look's like no one's here...</span>
+            </div>
         {% endfor %}
     </ul>
 

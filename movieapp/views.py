@@ -64,16 +64,39 @@ def profile(request):
 @require_POST
 def create_request_ajax(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
+    if not movie.available:
+        profile = get_object_or_404(Profile, user=request.user)
+        existing_request = Request.objects.filter(profile=profile, movie=movie).exists()
+
+        if existing_request:
+            return JsonResponse({'status': 'error', 'message': 'Request already exists.'}, status=400)
+
+        new_request = Request(profile=profile, movie=movie)
+        new_request.save()
+        print(movie)
+        return JsonResponse({'status': 'success', 'message': 'Request sent successfully.'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'You cannot request this movie because it is already '
+                                                           'marked as available.'}, status=400)
+
+
+@login_required(login_url='/login')
+@require_POST
+def remove_request_ajax(request, pk=None):
+    if pk is None:
+        pk = request.POST.get('movie_id')
+        print(pk)
+    movie = get_object_or_404(Movie, pk=pk)
+    print('movie is' + str(movie))
     profile = get_object_or_404(Profile, user=request.user)
-    existing_request = Request.objects.filter(profile=profile, movie=movie).exists()
 
-    if existing_request:
-        return JsonResponse({'status': 'error', 'message': 'Request already exists.'}, status=400)
-
-    new_request = Request(profile=profile, movie=movie)
-    new_request.save()
-    print(movie)
-    return JsonResponse({'status': 'success', 'message': 'Request sent successfully.'})
+    if Request.objects.filter(profile=profile, movie=movie).exists():
+        print('removed movie')
+        profile.requests.remove(movie)
+        return JsonResponse({'status': 'success', 'message': 'Request removed successfully.'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Trying to remove a request that doesn\'t exists'},
+                            status=400)
 
 
 @require_POST
