@@ -25,18 +25,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 text-md-right mt-3 mt-md-0">
+                <div class="col-md-2 text-md-right mt-3 mt-md-0">
                     <span class="badge badge-info request-status">{{ request.get_status_display }}</span>
                     <button class="btn btn-sm btn-danger request-btn ml-2 remove-request-button" data-request-id="{{ request.id }}" data-movie-id="{{ request.movie.tmdb_id }}" data-action="remove">Remove</button>
                 </div>
             </div>
         </li>
-           {% include 'navigation/pagination_buttons.html' %}
         {% empty %}
             <div class="alert alert-success d-flex justify-content-center align-items-center" role="alert">
                 <span class="text-center font-weight-bold" style="font-size: 1.5em;">Look's like no one's here...</span>
             </div>
         {% endfor %}
+       {% include 'navigation/pagination_buttons.html' %}
     </ul>
 
 </div>

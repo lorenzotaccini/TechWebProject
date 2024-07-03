@@ -3,6 +3,7 @@ from os.path import join
 
 import requests
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -18,6 +19,20 @@ class Movie(models.Model):
 
     def get_genre_as_list(self):
         return json.loads(self.genre)
+
+    def are_requests_sync(self):
+        # Get all requests for this movie
+        requests = self.movie_requests.all()
+
+        if not requests.exists():
+            return True
+
+        # Get the status of the first request
+        first_status = requests.first().status
+
+        # Check if all other requests have the same status
+        return all(req.status == first_status for req in requests)
+
 
     @property
     def poster_url(self):
@@ -73,12 +88,21 @@ class Request(models.Model):
         (PENDING, 'Request not yet evaluated')
     ]
     profile = models.ForeignKey(Profile, related_name='profile', on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, related_name='movie', on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, related_name='movie_requests', on_delete=models.CASCADE)
     status = models.CharField(choices=STATUS, default=PENDING, max_length=8)
     request_date = models.DateTimeField(auto_now_add=True)
 
+    def clean(self):
+        if self.movie.available:
+            raise ValidationError('Cannot request a movie that is already available.')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+
+
     def __str__(self):
-        return f"{self.profile} requested {self.movie} at time {self.request_date}"
+        return f"{self.profile} requested {self.movie} at time {self.request_date}, status {self.status}"
 
     class Meta:
         ordering = ["-request_date"]
