@@ -49,13 +49,19 @@ class MovieDetailView(DetailView):
             context['existing_request'] = False
         return context
 
-@require_GET
-def title_recommendation(request):
-    genres = request.GET.getlist('genres[]', [])
 
+@require_POST
+def title_recommendation(request):
+    genres = request.POST.getlist('genres[]', [])
+    print('retrieved list is {}'.format(genres))
+    '''allmovies_genre_list=[]
+    for m in Movie.objects.all().exclude(tmdb_id=request.POST.get('movie_id')):
+        allmovies_genre_list.append([m.tmdb_id, m.get_genre_as_list()])  # movie id and its genres
+        '''
+    allmovies_genre_list = [{m.tmdb_id: m.get_genre_as_list()} for m in Movie.objects.all().exclude(tmdb_id=request.POST.get('movie_id'))]
+    print(allmovies_genre_list)
     # Ottieni film consigliati con almeno un genere in comune
-    recommended_titles = Movie.objects.filter(genre__overlap=genres, available=True).exclude(pk=object.pk).order_by(
-        '?')[:5]
+    recommended_titles = Movie.objects.filter(genre__in=genres).order_by('?')[:5]
 
     print(recommended_titles)
 

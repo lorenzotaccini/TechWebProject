@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from django.views.generic import TemplateView
 
-from .views import MovieListView, MovieDetailView, create_request_ajax, add_movie_to_watchlist, remove_request_ajax
+from .views import *
 
 app_name = "movieapp"
 urlpatterns = [
@@ -13,5 +13,7 @@ urlpatterns = [
     path('movie/<int:pk>/remove/', remove_request_ajax, name='remove_request_ajax'),
     path('movie/remove/', remove_request_ajax, name='remove_request_ajax_noparam'),
     path('watchlist/', add_movie_to_watchlist, name='add_movie_to_watchlist'),
+
+    path('getrecommended/', title_recommendation, name='get_recommended_titles')
 
 ]
