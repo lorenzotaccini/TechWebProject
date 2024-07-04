@@ -18,9 +18,9 @@
 
         <div class="col-md-8">
             {% if back_btn %}
-                <a href="{% url 'movieapp:home' %}?page={{ view.get_my_page }}" class="btn btn-secondary mb-3"><i class="fas fa-arrow-left"></i> ◀ Back </a>
+                <a href="{% url 'movieapp:home' %}?page={{ view.get_my_page }}" class="btn btn-secondary mb-3"><i class="fas fa-arrow-left"></i> Back </a>
             {% else %}
-                <a href="{{ prev_page }}" class="btn btn-secondary mb-3"><i class="fas fa-arrow-left"></i> ◀ Back </a>
+                <a href="{{ prev_page }}" class="btn btn-secondary mb-3"><i class="fas fa-arrow-left"></i> Back </a>
             {% endif %}
             <h1 class="mt-3">{{ movie.title }}</h1>
             <p><strong>Production year:</strong> {{ movie.year }}</p>
@@ -30,26 +30,26 @@
                 <li>- {{ g }}</li>
                 {% endfor %}
             </ul>
-            <p><strong>Description:</strong></p> {{ object.pk }}
+            <p><strong>Description:</strong></p>
             <p>{{ movie.description }}</p>
 
             {% if movie.available %}
                 <div class="alert alert-success d-flex align-items-center" role="alert">
-                    <span>This movie is already available{% if user.is_authenticated %}, no need to request it!{% endif %}</span>
+                    <span><i class="fa-solid fa-check-double"></i> This movie is already available{% if user.is_authenticated %}, no need to request it!{% endif %}</span>
                 </div>
             {% else %}
                 {% if user.is_authenticated %}
                     <div class="d-flex align-items-center mb-3">
                         <button class="btn btn-primary mr-2" id="request-movie-button" {% if existing_request %}disabled{% endif %}>
                             {% if existing_request %}
-                                You have already requested this movie.
+                                <i class="fa-solid fa-check" style="color: #ffffff;"></i> You have already requested this movie.
                             {% else %}
-                                Request this movie
+                                <i class="fa-regular fa-bell" style="color: #ffffff;"></i> Request this movie
                             {% endif %}
                         </button>
                         {% if existing_request %}
                             <button class="btn btn-danger" id="remove-request-button">
-                                Remove Request
+                                <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Remove Request
                             </button>
                         {% endif %}
                     </div>
@@ -129,22 +129,27 @@
                 {% endif %}
             {% endif %}
             <div class="row">
-                <div class="col">
+                <div class="col-12">
                     <h3>If you like this, you might also like...</h3>
+                    <div style="display: flex;flex-wrap: nowrap;overflow-x: auto;" class="scrollable-row">
                         {% for movie in recommended_movies %}
-                            <div class="col-lg-3 col-md-4 mb-4">
-                                <div class="card h-100" id="{{ movie.tmdb_id }}">
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <a href="{% url 'movieapp:movie_detail_nopage' movie.tmdb_id %}" class="col-lg-3 col-md-4 col-sm-6 mb-4" style="text-decoration: none; color: inherit;">
+                                <div class="card h-80">
                                     {% if movie.poster_url %}
-                                    <img src="{{ movie.poster_url }}" class="card-img-top" alt="Poster del film">
+                                        <img src="{{ movie.poster_url }}" class="card-img-top" alt="Poster del film">
                                     {% else %}
-                                    <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Immagine non disponibile">
+                                        <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Immagine non disponibile">
                                     {% endif %}
                                     <div class="card-body">
                                         <h5 class="card-title text-truncate">{{ movie.title }} - {{ movie.year }}</h5>
                                         <p class="card-text multi-line-text-truncate">{{ movie.description }}</p>
                                     </div>
                                 </div>
+                                </a>
+                            </div>
                         {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>

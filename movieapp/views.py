@@ -18,7 +18,7 @@ from .models import Movie
 class MovieListView(ListView):
     model = Movie
     template_name = 'movie_list.html'
-    paginate_by = 5
+    paginate_by = 10
 
 
 class MovieDetailView(DetailView):
@@ -54,28 +54,32 @@ class MovieDetailView(DetailView):
         return context
 
 
+class SearchMovieListView(MovieListView):
+    def get_queryset(self):
+        return Movie.objects.filter(title__icontains=self.request.GET.get('title'))
+
+
 def title_recommendation(movie: Movie):
 
     def count_common_genres(list1, list2):
         return len(set(list1) & set(list2))
 
     genres = movie.get_genre_as_list()
-    print('retrieved list is {}'.format(genres))
     allmovies_genre_list = [(m, m.get_genre_as_list()) for m in
                             Movie.objects.all().exclude(tmdb_id=movie.tmdb_id)]
-    print(allmovies_genre_list)
+
     common_genres_list = [[elem[0], count_common_genres(genres, elem[1])] for elem in allmovies_genre_list]
     common_genres_list = sorted(common_genres_list, key=lambda x: x[1], reverse=True)
-    print(common_genres_list)
+
     recommended_titles = [elem[0] for elem in common_genres_list if elem[1]][:5]
-    print(recommended_titles)
+
     if len(recommended_titles) > 0:
         return recommended_titles
     else:
         return None
 
 
-@login_required(login_url='/login')
+@login_required
 @require_POST
 def create_request_ajax(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
@@ -95,7 +99,7 @@ def create_request_ajax(request, pk):
                                                            'marked as available.'}, status=400)
 
 
-@login_required(login_url='/login')
+@login_required
 @require_POST
 def remove_request_ajax(request, pk=None):
     if pk is None:

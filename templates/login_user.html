@@ -10,16 +10,15 @@
 </div>
 {% endif %}
     
-{% if request.user.is_authenticated %}
+{% if request.user.is_authenticated and not "notok" in request.GET.auth %}
     <div class="alert alert-danger" role="alert">
         you are already logged in! Log out first.
     </div>
-{% else %}
-    {% if "notok" in request.GET.auth %}
+{% elif "notok" in request.GET.auth %}
         <div class="alert alert-danger" role="alert">
             You are not allowed to visit this page. Please login as an authorized user.
         </div>
-    {% endif %}
+    {% else %}
     <form method="POST" action="{% url 'login' %}"> {% csrf_token %}
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -44,8 +43,7 @@
         </div>
     </form>
 {% endif %}
-
-
+    
 {% endblock %}
 
 {% block footer %} {% endblock %}

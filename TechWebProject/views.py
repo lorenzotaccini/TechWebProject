@@ -45,7 +45,7 @@ def logout_user(request):
     #messages.success(request, "You have been logged out. See you soon.")
     return redirect('/?logout=ok')
 
-@login_required(login_url='/login')
+@login_required
 def profile(request):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)

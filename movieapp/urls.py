@@ -14,6 +14,7 @@ urlpatterns = [
     path('movie/remove/', remove_request_ajax, name='remove_request_ajax_noparam'),
     path('watchlist/', add_movie_to_watchlist, name='add_movie_to_watchlist'),
 
-    path('getrecommended/', title_recommendation, name='get_recommended_titles')
+    path('getrecommended/', title_recommendation, name='get_recommended_titles'),
+    path('search/', SearchMovieListView.as_view(), name='search_title')
 
 ]

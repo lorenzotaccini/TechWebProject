@@ -70,7 +70,7 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="{% url 'movieapp:home' %}">Media Request Service</a>
+    <a class="navbar-brand" href="{% url 'movieapp:home' %}"><i class="fa-solid fa-clapperboard" style="color: #ffffff;"></i> Media Request Service <i class="fa-solid fa-film" style="color: #ffffff;"></i></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
         aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -98,7 +98,7 @@
             <li class="nav-item dropdown">
                 <button class="btn btn-sm btn-primary dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% if request.user.is_authenticated %}
-                        {{ request.user.username }} - {% if not user.is_superuser %}{{ user.groups.all.0.name }}{% else %}Administrator{% endif %}
+                        {{ request.user.username }} - {% if not user.is_superuser %}{{ user.groups.all.0.name }}{% else %}Administrator <i class="fa-solid fa-lock-open" style="color: #ffffff;"></i>{% endif %}
                     {% else %}
                         Anonymous User
                     {% endif %}
@@ -186,5 +186,8 @@
 <!-- Bootstrap JS and dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
 </body>
 </html>

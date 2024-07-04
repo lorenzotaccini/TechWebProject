@@ -14,12 +14,12 @@ from .utils import movie_search_API
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-@login_required(login_url='/login')
+@login_required
 def user_dashboard(request):
     return render(request, 'user_dashboard.html')
 
 
-@login_required(login_url='/login')
+@login_required
 def my_watchlist(request):
     user_profile = request.user.profile
     watchlist_movies = user_profile.watchlisted.all()

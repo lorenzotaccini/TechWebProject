@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "fontawesomefree",
     "movieapp.apps.MovieappConfig",
     "userdashboard.apps.UserdashboardConfig",
     "crispy_forms",
