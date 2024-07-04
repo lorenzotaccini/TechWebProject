@@ -45,34 +45,34 @@ class MovieDetailView(DetailView):
             request_count = Request.objects.filter(movie=movie).count()
             context['request_count'] = request_count
             context['movie_request'] = Request.objects.filter(profile=user_profile, movie=movie).first()
+
+            #movie recommendation system is called, results added to context
+            context['recommended_movies'] = title_recommendation(movie)
+
         else:
             context['existing_request'] = False
         return context
 
 
-@require_POST
-def title_recommendation(request):
+def title_recommendation(movie: Movie):
+
     def count_common_genres(list1, list2):
         return len(set(list1) & set(list2))
 
-    genres = request.POST.getlist('genres[]', [])
+    genres = movie.get_genre_as_list()
     print('retrieved list is {}'.format(genres))
-    '''allmovies_genre_list=[]
-    for m in Movie.objects.all().exclude(tmdb_id=request.POST.get('movie_id')):
-        allmovies_genre_list.append([m.tmdb_id, m.get_genre_as_list()])  # movie id and its genres
-        '''
-    allmovies_genre_list = [(m.tmdb_id, m.get_genre_as_list()) for m in
-                            Movie.objects.all().exclude(tmdb_id=request.POST.get('movie_id'))]
+    allmovies_genre_list = [(m, m.get_genre_as_list()) for m in
+                            Movie.objects.all().exclude(tmdb_id=movie.tmdb_id)]
     print(allmovies_genre_list)
     common_genres_list = [[elem[0], count_common_genres(genres, elem[1])] for elem in allmovies_genre_list]
     common_genres_list = sorted(common_genres_list, key=lambda x: x[1], reverse=True)
-
-    recommended_titles = [elem[0] for elem in common_genres_list][:5]
+    print(common_genres_list)
+    recommended_titles = [elem[0] for elem in common_genres_list if elem[1]][:5]
     print(recommended_titles)
     if len(recommended_titles) > 0:
-        return JsonResponse({'status': 'ok', 'recommended_titles': recommended_titles})
+        return recommended_titles
     else:
-        return JsonResponse({'status': 'empty'})
+        return None
 
 
 @login_required(login_url='/login')

@@ -128,52 +128,27 @@
                     <p><a href="{% url 'login' %}">Log in</a> to request this movie or to see its status.</p>
                 {% endif %}
             {% endif %}
-            <div class="row mt-5">
+            <div class="row">
                 <div class="col">
                     <h3>If you like this, you might also like...</h3>
-                    <ul class="list-unstyled recommended-titles">
-                        <!-- Qui verranno inseriti dinamicamente i titoli consigliati -->
-                    </ul>
+                        {% for movie in recommended_movies %}
+                            <div class="col-lg-3 col-md-4 mb-4">
+                                <div class="card h-100" id="{{ movie.tmdb_id }}">
+                                    {% if movie.poster_url %}
+                                    <img src="{{ movie.poster_url }}" class="card-img-top" alt="Poster del film">
+                                    {% else %}
+                                    <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Immagine non disponibile">
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title text-truncate">{{ movie.title }} - {{ movie.year }}</h5>
+                                        <p class="card-text multi-line-text-truncate">{{ movie.description }}</p>
+                                    </div>
+                                </div>
+                        {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    $(document).ready(function() {
-        function loadRecommendedTitles(genres) {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'movieapp:get_recommended_titles' %}",
-                data: {
-                    'csrfmiddlewaretoken': '{{ csrf_token }}',
-                    movie_id: {{movie.tmdb_id}},
-                    genres: genres  // Passa i generi separati da virgola come parametro
-                },
-                success: function(response) {
-                    $('.recommended-titles').empty();  // Svuota la lista precedente
-                    if (response.length > 0) {
-                        response.forEach(function(movie) {
-                            var listItem = '<li><a href="' + movie.url + '">' + movie.title + '</a></li>';
-                            $('#recommended-titles').append(listItem);
-                        });
-                    } else {
-                        $('#recommended-titles').append('<li>No recommended titles found.</li>');
-                    }
-                },
-                error: function() {
-                    $('#recommended-titles').empty().append('<li>Error loading recommended titles.</li>');
-                }
-            });
-        }
-        var genres = [
-            {% for g in movie.get_genre_as_list %}
-                '{{ g }}',
-            {% endfor %}
-        ];
-        console.log(genres)
-        loadRecommendedTitles(genres);
-    });
-</script>
 {% endblock %}
