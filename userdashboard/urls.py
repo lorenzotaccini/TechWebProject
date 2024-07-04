@@ -14,4 +14,6 @@ urlpatterns = [
 
     path('managerequest/', manage_requested_title, name='manage_requested_title'),
 
+    path('addtitle/', add_title, name='add_new_title'),
+
 ]

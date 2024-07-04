@@ -2,6 +2,20 @@
 {% block content %}
 
 <div class="container mt-4">
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card bg-light p-4">
+                <h4 class="card-title">Add New Movie</h4>
+                <form id="add-movie-form" class="form-inline d-flex justify-content-between">
+                    <div class="form-group mr-3 flex-grow-1">
+                        <input id="movie-tmdb-id" class="form-control w-100" placeholder="Insert TMDB ID here">
+                    </div>
+                    <button type="button" id="add-movie-btn" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
     <h2>Movies with Requests</h2>
     <ul class="list-group mt-3">
         {% for movie in page_obj %}
@@ -67,7 +81,7 @@
         {% endfor %}
     </ul>
 </div>
-
+</div>
 
 <script>
     $(document).ready(function() {
@@ -94,6 +108,24 @@
                         }
                     }
                 },
+            });
+        });
+        $('#add-movie-btn').click(function() {
+            var tmdb_id = $('#movie-tmdb-id').val();
+            console.log(tmdb_id)
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'userdashboard:add_new_title' %}",
+                data: {
+                    tmdb_id: tmdb_id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    alert(response.status)
+                },
+                error: function() {
+                    alert('Server side error during request');
+                }
             });
         });
     });

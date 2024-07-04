@@ -120,6 +120,7 @@
                                 }
                             });
                         });
+
                     });
                 </script>
 
@@ -131,4 +132,31 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function() {
+        function loadRecommendedTitles(genres) {
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'movieapp:recommended_titles' %}",
+                data: {
+                    genres: genres.join(',')  // Passa i generi separati da virgola come parametro
+                },
+                success: function(response) {
+                    $('.recommended-titles').empty();  // Svuota la lista precedente
+                    if (response.length > 0) {
+                        response.forEach(function(movie) {
+                            var listItem = '<li><a href="' + movie.url + '">' + movie.title + '</a></li>';
+                            $('#recommended-titles').append(listItem);
+                        });
+                    } else {
+                        $('#recommended-titles').append('<li>No recommended titles found.</li>');
+                    }
+                },
+                error: function() {
+                    $('#recommended-titles').empty().append('<li>Error loading recommended titles.</li>');
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

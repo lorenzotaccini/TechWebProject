@@ -1,3 +1,4 @@
+import requests
 from braces.views import GroupRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,7 +10,7 @@ from django.views.generic import DetailView, ListView
 from movieapp.models import Request, Profile, Movie
 # Create your views here.
 from movieapp.views import MovieListView
-
+from .utils import movie_search_API
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -20,7 +21,6 @@ def user_dashboard(request):
 
 @login_required(login_url='/login')
 def my_watchlist(request):
-
     user_profile = request.user.profile
     watchlist_movies = user_profile.watchlisted.all()
 
@@ -64,7 +64,6 @@ def is_moderator_or_higher(user):
     return user.groups.filter(name='Moderator').exists() or user.is_superuser
 
 
-
 @user_passes_test(is_moderator_or_higher)
 @require_POST
 def manage_requested_title(request):
@@ -82,3 +81,22 @@ def manage_requested_title(request):
         print('marked available')
     return JsonResponse({'status': 'ok'})
 
+
+@user_passes_test(is_moderator_or_higher)
+@require_POST
+def add_title(request):
+    tmdb_id = request.POST.get('tmdb_id')
+    if Movie.objects.filter(tmdb_id=tmdb_id).exists():
+        return JsonResponse({'status': 'This title already exists in the catalog'})
+    api_key = '5dbf33ab1210565bba9d880c176bf3d8'
+    movie_info = movie_search_API.get_movie_details(tmdb_id, api_key)
+    if movie_info is not None:
+        new_movie = Movie(tmdb_id=tmdb_id,
+                          title=movie_info['title'],
+                          year=movie_info['year'],
+                          description=movie_info['description'],
+                          genre=movie_info['genre'])
+        new_movie.save()
+        return JsonResponse({'status': f'Title: {movie_info["title"]} successfully added to catalog'})
+    else:
+        return JsonResponse({'status': 'Title not found, make sure to insert correct TMDB ID'})

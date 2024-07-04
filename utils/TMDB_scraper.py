@@ -2,7 +2,6 @@ import requests
 import random
 import json
 
-# Chiave API TMDB (inserisci la tua chiave API qui)
 API_KEY = '5dbf33ab1210565bba9d880c176bf3d8'
 
 
@@ -11,10 +10,10 @@ def get_random_movies(num_movies=20):
     endpoint = '/discover/movie'
     params = {
         'api_key': API_KEY,
-        'sort_by': 'popularity.desc',  # Puoi modificare il criterio di ordinamento se preferisci
+        'sort_by': 'popularity.desc',
         'include_adult': 'false',
         'include_video': 'false',
-        'page': 1,  # Seleziona i film dalla prima pagina dei risultati
+        'page': 1,
     }
 
     # Effettua la richiesta GET all'API di TMDB
@@ -77,5 +76,6 @@ def create_json_file(movies):
 
 if __name__ == "__main__":
     random_movies = get_random_movies(num_movies=20)
-    if random_movies:
-        create_json_file(random_movies)
+    print(random_movies)
+    '''if random_movies:
+        create_json_file(random_movies)'''

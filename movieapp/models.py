@@ -55,6 +55,7 @@ class Movie(models.Model):
             print('Error in API request:', e)
             return None
 
+    def get
 
     def __str__(self):
         return f"{self.title} - {self.tmdb_id}"

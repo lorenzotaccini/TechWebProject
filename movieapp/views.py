@@ -5,11 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserChangeForm
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import reverse_lazy
-from django.views.decorators.http import require_POST
+from django.urls import reverse_lazy, reverse
+from django.views.decorators.http import require_POST, require_GET
 from django.views.generic import ListView, UpdateView, DetailView
 
-from .forms import UpdateUserForm, UpdateProfileForm
 from .models import Movie, Profile, Request
 from django.views.generic import ListView
 
@@ -50,22 +49,24 @@ class MovieDetailView(DetailView):
             context['existing_request'] = False
         return context
 
+@require_GET
+def title_recommendation(request):
+    genres = request.GET.getlist('genres[]', [])
 
-@login_required(login_url='/login')
-def profile(request):
-    if request.method == 'POST':
-        user_form = UpdateUserForm(request.POST, instance=request.user)
-        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+    # Ottieni film consigliati con almeno un genere in comune
+    recommended_titles = Movie.objects.filter(genre__overlap=genres, available=True).exclude(pk=object.pk).order_by(
+        '?')[:5]
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            return redirect('movieapp:home')
-    else:
-        user_form = UpdateUserForm(instance=request.user)
-        profile_form = UpdateProfileForm(instance=request.user.profile)
+    print(recommended_titles)
 
-    return render(request, 'edit_profile.html', {'user_form': user_form, 'profile_form': profile_form})
+    recommended_titles_list = []
+    for title in recommended_titles:
+        recommended_titles_list.append({
+            'title': title.title,
+            'url': reverse('movieapp:movie_detail_nopage', args=[title.pk])
+        })
+
+    return JsonResponse(recommended_titles_list, safe=False)
 
 
 @login_required(login_url='/login')
