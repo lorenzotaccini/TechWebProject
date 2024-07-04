@@ -52,27 +52,27 @@ class MovieDetailView(DetailView):
 
 @require_POST
 def title_recommendation(request):
+    def count_common_genres(list1, list2):
+        return len(set(list1) & set(list2))
+
     genres = request.POST.getlist('genres[]', [])
     print('retrieved list is {}'.format(genres))
     '''allmovies_genre_list=[]
     for m in Movie.objects.all().exclude(tmdb_id=request.POST.get('movie_id')):
         allmovies_genre_list.append([m.tmdb_id, m.get_genre_as_list()])  # movie id and its genres
         '''
-    allmovies_genre_list = [{m.tmdb_id: m.get_genre_as_list()} for m in Movie.objects.all().exclude(tmdb_id=request.POST.get('movie_id'))]
+    allmovies_genre_list = [(m.tmdb_id, m.get_genre_as_list()) for m in
+                            Movie.objects.all().exclude(tmdb_id=request.POST.get('movie_id'))]
     print(allmovies_genre_list)
-    # Ottieni film consigliati con almeno un genere in comune
-    recommended_titles = Movie.objects.filter(genre__in=genres).order_by('?')[:5]
+    common_genres_list = [[elem[0], count_common_genres(genres, elem[1])] for elem in allmovies_genre_list]
+    common_genres_list = sorted(common_genres_list, key=lambda x: x[1], reverse=True)
 
+    recommended_titles = [elem[0] for elem in common_genres_list][:5]
     print(recommended_titles)
-
-    recommended_titles_list = []
-    for title in recommended_titles:
-        recommended_titles_list.append({
-            'title': title.title,
-            'url': reverse('movieapp:movie_detail_nopage', args=[title.pk])
-        })
-
-    return JsonResponse(recommended_titles_list, safe=False)
+    if len(recommended_titles) > 0:
+        return JsonResponse({'status': 'ok', 'recommended_titles': recommended_titles})
+    else:
+        return JsonResponse({'status': 'empty'})
 
 
 @login_required(login_url='/login')

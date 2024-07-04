@@ -148,6 +148,7 @@
                 url: "{% url 'movieapp:get_recommended_titles' %}",
                 data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    movie_id: {{movie.tmdb_id}},
                     genres: genres  // Passa i generi separati da virgola come parametro
                 },
                 success: function(response) {
