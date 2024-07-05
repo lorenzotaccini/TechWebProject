@@ -71,14 +71,14 @@ def manage_requested_title(request):
     movie = get_object_or_404(Movie, tmdb_id=request.POST['movie_id'])
     if action == 'approve':
         movie.movie_requests.all().update(status='approved')
-        print('approved')
+
     elif action == 'reject':
         movie.movie_requests.all().update(status='rejected')
-        print('rejected')
+
     elif action == 'mark_available':
         movie.available = True
         movie.save()
-        print('marked available')
+
     return JsonResponse({'status': 'ok'})
 
 

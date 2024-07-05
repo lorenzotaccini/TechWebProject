@@ -31,6 +31,20 @@
                 </div>
             </div>
         </div>
+        {% empty %}
+            {% if request.GET.q %}
+                </div>
+                <div class="alert alert-danger d-flex justify-content-center align-items-center" role="alert">
+                    <span class="text-center font-weight-bold" style="font-size: 1.5em;">
+                        No results for "{{ request.GET.q }}"
+                    </span>
+                </div>
+            {% else %}
+        </div>
+            <div class="alert alert-success d-flex justify-content-center align-items-center" role="alert">
+                <span class="text-center font-weight-bold" style="font-size: 1.5em;">Look's like no one's here...</span>
+            </div>
+            {% endif %}
         {% endfor %}
     </div>
 

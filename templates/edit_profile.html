@@ -1,10 +1,8 @@
 {% extends "GPT_home.html" %}
 
-
 {% block content %}
-
     {% if user_form.errors %}
-        <div class="alert alert-danger alert-dismissible" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <div id="form_errors">
                 {% for key, value in user_form.errors.items %}
                     <strong>{{ value }}</strong>
@@ -16,34 +14,43 @@
         </div>
     {% endif %}
     <div class="container mt-5">
-    <div class="row justify-content-center">
-    <div class="col-md-6">
-    <div class="row ">
-        <img class="rounded-circle account-img" src="{{ user.profile.propic.url }} " style="cursor: pointer;" alt="image..."/>
-    </div>
-    <div class="form-content">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-row">
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label class="small mb-1">Username:</label>
-                            {{ user_form.username }}
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Profile Settings</h4>
                     </div>
-                    <div class="form-group">
-                        <a href="#">Change Password</a>
-                        <hr>
-                        <label class="small mb-1">Change Avatar:</label>
-                        {{ profile_form.avatar }}
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <img src="{{ user.profile.propic.url }}" class="rounded-circle img-thumbnail" alt="Profile Picture" style="width: 150px; height: 150px;">
+                        </div>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1">Username:</label>
+                                    {{ user_form.username }}
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1">Email:</label>
+                                    {{ user_form.email }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <a href="#">Change Password</a>
+                            </div>
+                            <div class="form-group">
+                                <label class="small mb-1">Change Avatar:</label>
+                                {{ profile_form.propic }}
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-            <br><br>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-            <button type="reset" class="btn btn-secondary">Reset</button>
-        </form>
-    </div>
-    </div>
-    </div>
+        </div>
     </div>
 {% endblock content %}

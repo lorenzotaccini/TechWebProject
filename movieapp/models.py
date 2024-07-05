@@ -66,7 +66,7 @@ class Movie(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
     propic = models.ImageField(
-        upload_to='users_pics',
+        upload_to='profilepictures/',
         default=join('static', 'unknown_user.png'),
         blank=True
     )

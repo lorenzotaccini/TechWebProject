@@ -3,17 +3,19 @@ from urllib.parse import urlparse
 import requests
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserChangeForm
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy, reverse, resolve
 from django.views.decorators.http import require_POST, require_GET
-from django.views.generic import ListView, UpdateView, DetailView
+from django.views.generic import ListView, UpdateView, DetailView, View
 
 from .models import Movie, Profile, Request
 from django.views.generic import ListView
 
 from .models import Movie
 
+from .workers import *
 
 class MovieListView(ListView):
     model = Movie
@@ -21,13 +23,30 @@ class MovieListView(ListView):
     paginate_by = 10
 
 
-class SearchMovieListView(ListView):
+class SearchMovieListView(MovieListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
+        res = self.model.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
+        if not res:  # try to catch mispelled infos
+            similars = find_similar_movies(Movie.objects.values_list('title'), query)
+            return Movie.objects.filter(title__in=similars)
         if query:
-            return Movie.objects.filter(title__icontains=query)
+            return res
         else:
             return Movie.objects.none()
+
+
+class MovieAutocomplete(View):
+    def get(self, request, *args, **kwargs):
+        term = request.GET.get('term', '')
+        movies = Movie.objects.filter(Q(title__icontains=term) | Q(description__icontains=term))[:10]
+        suggestions = []
+        for movie in movies:
+            suggestions.append({
+                'label': f"{movie.title} ({movie.year})",
+                'value': movie.title
+            })
+        return JsonResponse(suggestions, safe=False)
 
 
 class MovieDetailView(DetailView):
@@ -65,23 +84,7 @@ class MovieDetailView(DetailView):
         return context
 
 
-def title_recommendation(movie: Movie):
-    def count_common_genres(list1, list2):
-        return len(set(list1) & set(list2))
 
-    genres = movie.get_genre_as_list()
-    allmovies_genre_list = [(m, m.get_genre_as_list()) for m in
-                            Movie.objects.all().exclude(tmdb_id=movie.tmdb_id)]
-
-    common_genres_list = [[elem[0], count_common_genres(genres, elem[1])] for elem in allmovies_genre_list]
-    common_genres_list = sorted(common_genres_list, key=lambda x: x[1], reverse=True)
-
-    recommended_titles = [elem[0] for elem in common_genres_list if elem[1]][:5]
-
-    if len(recommended_titles) > 0:
-        return recommended_titles
-    else:
-        return None
 
 
 @login_required

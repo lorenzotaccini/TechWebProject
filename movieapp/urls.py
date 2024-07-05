@@ -15,6 +15,7 @@ urlpatterns = [
     path('watchlist/', add_movie_to_watchlist, name='add_movie_to_watchlist'),
 
     path('getrecommended/', title_recommendation, name='get_recommended_titles'),
-    path('search/', SearchMovieListView.as_view(), name='search_title')
+    path('search/', SearchMovieListView.as_view(), name='search_title'),
+    path('autocomplete/', MovieAutocomplete.as_view(), name='movie_autocomplete'),
 
 ]
