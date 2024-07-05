@@ -21,6 +21,15 @@ class MovieListView(ListView):
     paginate_by = 10
 
 
+class SearchMovieListView(ListView):
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Movie.objects.filter(title__icontains=query)
+        else:
+            return Movie.objects.none()
+
+
 class MovieDetailView(DetailView):
     model = Movie
     template_name = 'movie_detail.html'
@@ -56,13 +65,7 @@ class MovieDetailView(DetailView):
         return context
 
 
-class SearchMovieListView(MovieListView):
-    def get_queryset(self):
-        return Movie.objects.filter(title__icontains=self.request.GET.get('title'))
-
-
 def title_recommendation(movie: Movie):
-
     def count_common_genres(list1, list2):
         return len(set(list1) & set(list2))
 

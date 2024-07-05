@@ -98,7 +98,8 @@
                 {% endif %}
             </ul>
         {% endif %}
-        <form class="form-inline my-2 my-lg-0">
+        <form class="form-inline my-2 my-lg-0" method="POST" action {% url 'movieapp:search_title' %}>
+            {% csrf_token %}
             <input name="search_query" class="form-control mr-sm-2" type="search" placeholder="Search a title..." aria-label="Search">
             <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
         </form>
