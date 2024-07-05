@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserChangeForm
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy, reverse, resolve
 from django.views.decorators.http import require_POST, require_GET
 from django.views.generic import ListView, UpdateView, DetailView
 
@@ -34,20 +34,22 @@ class MovieDetailView(DetailView):
         if parsed_url.path == '/':
             context['back_btn'] = True
         else:
+            if parsed_url.path.strip('/').split('/')[0] == 'movie':
+                context['prev_page'] = reverse('movieapp:home')
+            else:
+                context['prev_page'] = self.request.META.get('HTTP_REFERER')
             context['back_btn'] = False
-            context['prev_page'] = self.request.META.get('HTTP_REFERER')
         user = self.request.user
+        movie = self.get_object()
+        # movie recommendation system is called, results added to context
+        context['recommended_movies'] = title_recommendation(movie)
         if user.is_authenticated:
             user_profile = get_object_or_404(Profile, user=user)
-            movie = self.get_object()
             existing_request = Request.objects.filter(profile=user_profile, movie=movie).exists()
             context['existing_request'] = existing_request
             request_count = Request.objects.filter(movie=movie).count()
             context['request_count'] = request_count
             context['movie_request'] = Request.objects.filter(profile=user_profile, movie=movie).first()
-
-            #movie recommendation system is called, results added to context
-            context['recommended_movies'] = title_recommendation(movie)
 
         else:
             context['existing_request'] = False

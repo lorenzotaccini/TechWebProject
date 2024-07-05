@@ -74,55 +74,7 @@
                         {% endif %}
                     </p>
 
-                <script>
-                    $(document).ready(function() {
-                        $('#request-movie-button').click(function() {
-                            $.ajax({
-                                type: 'POST',
-                                url: "{% url 'movieapp:create_request_ajax' object.pk %}",
-                                data: {
-                                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                                },
-                                success: function(response) {
-                                    if (response.status === 'success') {
-                                        $('#request-status').text(response.message).css('color', 'green');
-                                        $('#request-movie-button').prop('disabled', true);
-                                        $('#remove-request-button').show();
-                                        $('#requests-count').load(location.href + ' #requests-count');
-                                    } else {
-                                        $('#request-status').text(response.message).css('color', 'red');
-                                    }
-                                },
-                                error: function(response) {
-                                    $('#request-status').text('An error occurred. Please try again.').css('color', 'red');
-                                }
-                            });
-                        });
 
-                        $('#remove-request-button').click(function() {
-                            $.ajax({
-                                type: 'POST',
-                                url: "{% url 'movieapp:remove_request_ajax' object.pk %}",
-                                data: {
-                                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                                },
-                                success: function(response) {
-                                    if (response.status === 'success') {
-                                        $('#request-status').text(response.message).css('color', 'green');
-                                        $('#remove-request-button').hide();
-                                        $('#requests-count').load(location.href + ' #requests-count');
-                                    } else {
-                                        $('#request-status').text(response.message).css('color', 'red');
-                                    }
-                                },
-                                error: function(response) {
-                                    $('#request-status').text('An error occurred. Please try again.').css('color', 'red');
-                                }
-                            });
-                        });
-
-                    });
-                </script>
 
                 {% else %}
                     <p><a href="{% url 'login' %}">Log in</a> to request this movie or to see its status.</p>
@@ -156,4 +108,55 @@
     </div>
 </div>
 
+
+
+    <script>
+        $(document).ready(function() {
+            $('#request-movie-button').click(function() {
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'movieapp:create_request_ajax' object.pk %}",
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#request-status').text(response.message).css('color', 'green');
+                            $('#request-movie-button').prop('disabled', true);
+                            $('#remove-request-button').show();
+                            $('#requests-count').load(location.href + ' #requests-count');
+                        } else {
+                            $('#request-status').text(response.message).css('color', 'red');
+                        }
+                    },
+                    error: function(response) {
+                        $('#request-status').text('An error occurred. Please try again.').css('color', 'red');
+                    }
+                });
+            });
+
+            $('#remove-request-button').click(function() {
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'movieapp:remove_request_ajax' object.pk %}",
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#request-status').text(response.message).css('color', 'green');
+                            $('#remove-request-button').hide();
+                            $('#requests-count').load(location.href + ' #requests-count');
+                        } else {
+                            $('#request-status').text(response.message).css('color', 'red');
+                        }
+                    },
+                    error: function(response) {
+                        $('#request-status').text('An error occurred. Please try again.').css('color', 'red');
+                    }
+                });
+            });
+
+        });
+    </script>
 {% endblock %}
