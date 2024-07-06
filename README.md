@@ -1,15 +1,15 @@
 # Requestarr
----
+
 Progetto finale del corso di Tecnologie Web, anno di corso 2023/2024, studente Lorenzo Taccini.
 
 ## Estratto
----
+
 Il progetto ha lo scopo di realizzare un servizio di **media request and discovery** per un utilizzo *in-house*, ad esempio nel deploy di un home server.
 
 Creato sulla falsa riga di servizi più blasonati come [Overseerr](https://overseerr.dev/), per facilitare la fruizione di contenuti multimediali, in particolare per il **processo di richiesta di nuovi contenuti**.
 
 ## Features Principali
----
+
 - Visualizzazione di un **catalogo di film aggiornato e aggiornabile**, con dettagli su ogni titolo, ottenuti direttamente da [TMDB](https://www.themoviedb.org/)
 - **Richiesta di titoli** ai moderatori da parte di utenti registrati
 - **Dashboard personale** per la personalizzazione del profilo utente
@@ -20,7 +20,7 @@ Creato sulla falsa riga di servizi più blasonati come [Overseerr](https://overs
 
 
 ## Installazione e start-up
----
+
 Assicurati di lavorare in un ambiente con pipenv configurato.
 
 Installa i requisiti contenuti nel file `requirements.txt` lanciando (dalla ROOT di progetto):
@@ -46,7 +46,7 @@ python manage.py runserver
 ```
 
 ## Testing 
----
+
 Per utilizzare le funzionalità di **unit testing** basta eseguire, dalla ROOT:
 ```shell
 python manage.py test movieapp.tests
