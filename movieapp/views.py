@@ -28,7 +28,7 @@ class SearchMovieListView(MovieListView):
         query = self.request.GET.get('q')
         res = self.model.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
         if not res:  # try to catch mispelled infos
-            similars = find_similar_movies(Movie.objects.values_list('title'), query)
+            similars = find_similar_movies(list(Movie.objects.values_list('title', flat=True)), query)
             return Movie.objects.filter(title__in=similars)
         if query:
             return res
@@ -41,6 +41,9 @@ class MovieAutocomplete(View):
         term = request.GET.get('term', '')
         movies = Movie.objects.filter(Q(title__icontains=term) | Q(description__icontains=term))[:10]
         suggestions = []
+        if not movies:
+            similar_titles = find_similar_movies(list(Movie.objects.values_list('title', flat=True)), term)
+            movies = Movie.objects.filter(title__in=similar_titles)
         for movie in movies:
             suggestions.append({
                 'label': f"{movie.title} ({movie.year})",

@@ -25,7 +25,10 @@ def title_recommendation(movie: Movie):
 
 
 def find_similar_movies(movie_titles: list, query):
-    print(movie_titles)
-    similar_words = difflib.get_close_matches(query, [elem for elem in movie_titles], 3, 0.6)
-    print(similar_words)
-    return movie_titles
+    tolerance = 0.6
+    similar_movies = []
+    for s in movie_titles:
+        s_ratio = difflib.SequenceMatcher(None, query, s).ratio()
+        if s_ratio >= tolerance:
+            similar_movies.append(s)
+    return similar_movies
