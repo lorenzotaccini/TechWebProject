@@ -1,7 +1,5 @@
 import difflib
 
-from django.db.models import QuerySet
-
 from movieapp.models import Movie
 
 

@@ -1,11 +1,12 @@
-from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
+from braces.views import SuperuserRequiredMixin
+from django.contrib.auth import login, logout, authenticate
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView
+
 from .forms import *
-from django.contrib.auth import login, logout, authenticate
-from braces.views import GroupRequiredMixin, SuperuserRequiredMixin
+
 
 class UserCreateView(CreateView):
     form_class = CreateRegisteredUserForm
@@ -25,7 +26,6 @@ def login_user(request):
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         redirect_to = request.GET.get('next', '')
-        print(redirect_to)
         if user is not None:
             login(request, user)
             if redirect_to:

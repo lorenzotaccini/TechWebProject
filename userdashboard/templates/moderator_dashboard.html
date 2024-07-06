@@ -89,6 +89,7 @@
             var movie_id = $(this).attr('data-movie-id')
             var action = $(this).attr('data-action')
             var button = $(this)
+            var card = button.closest('.list-group-item');
             $.ajax({
                 type: 'POST',
                 url: "{% url 'userdashboard:manage_requested_title' %}",
@@ -103,8 +104,13 @@
                             button.text('Now Available');
                             button.disabled = true;
                         }
-                        else if (action === 'approve' || action === 'reject') {
+                        else if (action === 'approve') {
                             button.hide()
+                            card.removeClass('custom-bg-neutral custom-bg-red').addClass('custom-bg-green')
+                        }
+                        else if(action === 'reject'){
+                            button.hide()
+                            card.removeClass('custom-bg-neutral custom-bg-green').addClass('custom-bg-red')
                         }
                     }
                 },

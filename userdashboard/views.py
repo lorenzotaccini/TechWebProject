@@ -1,17 +1,16 @@
-import requests
+from braces.views import GroupRequiredMixin
 from braces.views import GroupRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
-from django.views.generic import DetailView, ListView
+from django.views.generic import ListView
 
 from movieapp.models import Request, Profile, Movie
 # Create your views here.
-from movieapp.views import MovieListView
 from .utils import movie_search_API
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required

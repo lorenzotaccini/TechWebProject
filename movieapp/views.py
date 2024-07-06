@@ -1,21 +1,17 @@
 from urllib.parse import urlparse
 
-import requests
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserChangeForm
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import reverse_lazy, reverse, resolve
-from django.views.decorators.http import require_POST, require_GET
-from django.views.generic import ListView, UpdateView, DetailView, View
-
-from .models import Movie, Profile, Request
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.views.decorators.http import require_POST
+from django.views.generic import DetailView, View
 from django.views.generic import ListView
 
-from .models import Movie
-
+from .models import Profile, Request
 from .workers import *
+
 
 class MovieListView(ListView):
     model = Movie
@@ -87,9 +83,6 @@ class MovieDetailView(DetailView):
         return context
 
 
-
-
-
 @login_required
 @require_POST
 def create_request_ajax(request, pk):
@@ -99,12 +92,12 @@ def create_request_ajax(request, pk):
         existing_request = Request.objects.filter(profile=profile, movie=movie).exists()
 
         if existing_request:
+            print('request is somehow already existing... defuck?')
             return JsonResponse({'status': 'error', 'message': 'Request already exists.'}, status=400)
-
-        new_request = Request(profile=profile, movie=movie)
-        new_request.save()
-        print(movie)
-        return JsonResponse({'status': 'success', 'message': 'Request sent successfully.'})
+        else:
+            new_request = Request(profile=profile, movie=movie)
+            new_request.save()
+            return JsonResponse({'status': 'success', 'message': 'Request sent successfully.'})
     else:
         return JsonResponse({'status': 'error', 'message': 'You cannot request this movie because it is already '
                                                            'marked as available.'}, status=400)
@@ -115,13 +108,11 @@ def create_request_ajax(request, pk):
 def remove_request_ajax(request, pk=None):
     if pk is None:
         pk = request.POST.get('movie_id')
-        print(pk)
     movie = get_object_or_404(Movie, pk=pk)
-    print('movie is' + str(movie))
+
     profile = get_object_or_404(Profile, user=request.user)
 
     if Request.objects.filter(profile=profile, movie=movie).exists():
-        print('removed movie')
         profile.requests.remove(movie)
         return JsonResponse({'status': 'success', 'message': 'Request removed successfully.'})
     else:

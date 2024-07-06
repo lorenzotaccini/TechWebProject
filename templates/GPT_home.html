@@ -76,6 +76,11 @@
         .custom-bg-neutral {
             background-color: #cfdcff; 
         }
+        .card:hover {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
 
     </style>
     {% load crispy_forms_tags %}
@@ -144,7 +149,7 @@
                     </div>
                     {% else %}
                         <a class="dropdown-item" href="{% url 'login' %}"><i class="fas fa-user"></i>Login</a>
-                        <a class="dropdown-item" href="{% url 'admin:index' %}"><i class="fas fa-user"></i>Sign-up</a>
+                        <a class="dropdown-item" href="{% url 'rregister' %}"><i class="fas fa-user"></i>Sign-up</a>
                     {% endif %}
                 </div>
             </li>

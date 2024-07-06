@@ -5,6 +5,7 @@ import requests
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Max
 
 
 # Create your models here.
@@ -33,6 +34,8 @@ class Movie(models.Model):
         # Check if all other requests have the same status
         return all(req.status == first_status for req in requests)
 
+    def get_last_request(self):
+        return self.movie_requests.all().order_by('-request_date').first()
 
     @property
     def poster_url(self):
@@ -46,7 +49,7 @@ class Movie(models.Model):
 
             if 'poster_path' in data and data['poster_path']:
                 poster_path = data['poster_path']
-                poster_url = f'https://image.tmdb.org/t/p/w154{poster_path}'
+                poster_url = f'https://image.tmdb.org/t/p/w342{poster_path}'
                 return poster_url
             else:
                 return None
@@ -59,7 +62,7 @@ class Movie(models.Model):
         return f"{self.title} - {self.tmdb_id}"
 
     class Meta:
-        ordering = ["-pk"]
+        ordering = ["title"]
         verbose_name_plural = 'Movies'
 
 
