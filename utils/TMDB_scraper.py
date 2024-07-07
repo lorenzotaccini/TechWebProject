@@ -5,7 +5,7 @@ import json
 API_KEY = '5dbf33ab1210565bba9d880c176bf3d8'
 
 
-def get_random_movies(num_movies=20):
+def get_random_movies(num_movies=30):
     base_url = 'https://api.themoviedb.org/3'
     endpoint = '/discover/movie'
     params = {
@@ -13,7 +13,7 @@ def get_random_movies(num_movies=20):
         'sort_by': 'popularity.desc',
         'include_adult': 'false',
         'include_video': 'false',
-        'page': 1,
+        'page': 2,
     }
 
     # Effettua la richiesta GET all'API di TMDB
@@ -68,7 +68,7 @@ def create_json_file(movies):
         movies_info.append(movie_info)
 
     # Scrivi le informazioni nel file JSON
-    with open('../movieapp/fixtures/random_movies.json', 'w', encoding='utf-8') as f:
+    with open('./movieapp/fixtures/random_movies.json', 'w', encoding='utf-8') as f:
         json.dump(movies_info, f, ensure_ascii=False, indent=4)
 
     print("File JSON 'random_movies.json' creato con successo.")
@@ -76,6 +76,5 @@ def create_json_file(movies):
 
 if __name__ == "__main__":
     random_movies = get_random_movies(num_movies=20)
-    print(random_movies)
-    '''if random_movies:
-        create_json_file(random_movies)'''
+    if random_movies:
+        create_json_file(random_movies)

@@ -5,7 +5,6 @@ import requests
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Max
 
 
 # Create your models here.
@@ -41,7 +40,6 @@ class Movie(models.Model):
     def poster_url(self):
         api_key = '5dbf33ab1210565bba9d880c176bf3d8'
         base_url = f'https://api.themoviedb.org/3/movie/{self.tmdb_id}?api_key={api_key}'
-
 
         try:
             response = requests.get(base_url)
@@ -101,7 +99,6 @@ class Request(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
-
 
     def __str__(self):
         return f"{self.profile} requested {self.movie} at time {self.request_date}, status {self.status}"

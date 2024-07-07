@@ -1,46 +1,156 @@
 [
     {
         "model": "movieapp.movie",
-        "pk": 639720,
+        "pk": 693134,
         "fields": {
-            "title": "IF",
+            "title": "Dune: Part Two",
             "year": "2024",
-            "tmdb_id": 639720,
-            "description": "A young girl who goes through a difficult experience begins to see everyone's imaginary friends who have been left behind as their real-life friends have grown up.",
-            "genre": "[\"Comedy\", \"Fantasy\", \"Family\"]"
+            "tmdb_id": 693134,
+            "description": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
+            "genre": "[\"Science Fiction\", \"Adventure\"]"
         }
     },
     {
         "model": "movieapp.movie",
-        "pk": 1022789,
+        "pk": 533535,
         "fields": {
-            "title": "Inside Out 2",
+            "title": "Deadpool & Wolverine",
             "year": "2024",
-            "tmdb_id": 1022789,
-            "description": "Teenager Riley's mind headquarters is undergoing a sudden demolition to make room for something entirely unexpected: new Emotions! Joy, Sadness, Anger, Fear and Disgust, who’ve long been running a successful operation by all accounts, aren’t sure how to feel when Anxiety shows up. And it looks like she’s not alone.",
-            "genre": "[\"Animation\", \"Family\", \"Adventure\", \"Comedy\"]"
+            "tmdb_id": 533535,
+            "description": "A listless Wade Wilson toils away in civilian life with his days as the morally flexible mercenary, Deadpool, behind him. But when his homeworld faces an existential threat, Wade must reluctantly suit-up again with an even more reluctant Wolverine.",
+            "genre": "[\"Science Fiction\", \"Action\", \"Comedy\"]"
         }
     },
     {
         "model": "movieapp.movie",
-        "pk": 1001311,
+        "pk": 1086591,
         "fields": {
-            "title": "Under Paris",
-            "year": "2024",
-            "tmdb_id": 1001311,
-            "description": "In the Summer of 2024, Paris is hosting the World Triathlon Championships on the Seine for the first time. Sophia, a brilliant scientist, learns from Mika, a young environmental activist, that a large shark is swimming deep in the river. To avoid a bloodbath at the heart of the city, they have no choice but to join forces with Adil, the Seine river police commander.",
-            "genre": "[\"Thriller\", \"Horror\", \"Action\", \"Mystery\"]"
+            "title": "Rascal Does Not Dream of a Knapsack Kid",
+            "year": "2023",
+            "tmdb_id": 1086591,
+            "description": "Finally, the day of Mai's high school graduation has arrived. While Sakuta eagerly waits for his girlfriend, an elementary schooler who looks exactly like her appears before him. Suspicious, and for all the wrong reasons... Meanwhile, Sakuta and Kaede's father suddenly calls, saying that their mother wants to see her daughter. She was hospitalized because Kaede's condition had been too much for her to bear, so what could she possibly want now?",
+            "genre": "[\"Animation\", \"Drama\", \"Fantasy\"]"
         }
     },
     {
         "model": "movieapp.movie",
-        "pk": 573435,
+        "pk": 1197406,
         "fields": {
-            "title": "Bad Boys: Ride or Die",
+            "title": "El Halcón: Sed de Venganza",
+            "year": "2023",
+            "tmdb_id": 1197406,
+            "description": "Criminals control Mexico and wrestling is now illegal. A retired fighter and a policewoman join forces to stop the perfidious criminal who has kidnapped her son.",
+            "genre": "[\"Action\", \"Adventure\", \"Comedy\"]"
+        }
+    },
+    {
+        "model": "movieapp.movie",
+        "pk": 38700,
+        "fields": {
+            "title": "Bad Boys for Life",
+            "year": "2020",
+            "tmdb_id": 38700,
+            "description": "Marcus and Mike are forced to confront new threats, career changes, and midlife crises as they join the newly created elite team AMMO of the Miami police department to take down the ruthless Armando Armas, the vicious leader of a Miami drug cartel.",
+            "genre": "[\"Thriller\", \"Action\", \"Crime\"]"
+        }
+    },
+    {
+        "model": "movieapp.movie",
+        "pk": 1010581,
+        "fields": {
+            "title": "My Fault",
+            "year": "2023",
+            "tmdb_id": 1010581,
+            "description": "Noah must leave her city, boyfriend, and friends to move into William Leister's mansion, the flashy and wealthy husband of her mother Rafaela. As a proud and independent 17 year old, Noah resists living in a mansion surrounded by luxury. However, it is there where she meets Nick, her new stepbrother, and the clash of their strong personalities becomes evident from the very beginning.",
+            "genre": "[\"Drama\", \"Romance\"]"
+        }
+    },
+    {
+        "model": "movieapp.movie",
+        "pk": 829402,
+        "fields": {
+            "title": "Ultraman: Rising",
             "year": "2024",
-            "tmdb_id": 573435,
-            "description": "After their late former Captain is framed, Lowrey and Burnett try to clear his name, only to end up on the run themselves.",
-            "genre": "[\"Action\", \"Crime\", \"Thriller\", \"Comedy\"]"
+            "tmdb_id": 829402,
+            "description": "A star athlete reluctantly returns home to take over his father's duties as Ultraman, shielding Tokyo from giant monsters as he becomes a legendary hero.",
+            "genre": "[\"Animation\", \"Science Fiction\", \"Family\", \"Action\"]"
+        }
+    },
+    {
+        "model": "movieapp.movie",
+        "pk": 1096197,
+        "fields": {
+            "title": "No Way Up",
+            "year": "2024",
+            "tmdb_id": 1096197,
+            "description": "Characters from different backgrounds are thrown together when the plane they're travelling on crashes into the Pacific Ocean. A nightmare fight for survival ensues with the air supply running out and dangers creeping in from all sides.",
+            "genre": "[\"Action\", \"Horror\", \"Thriller\"]"
+        }
+    },
+    {
+        "model": "movieapp.movie",
+        "pk": 940551,
+        "fields": {
+            "title": "Migration",
+            "year": "2023",
+            "tmdb_id": 940551,
+            "description": "After a migrating duck family alights on their pond with thrilling tales of far-flung places, the Mallard family embarks on a family road trip, from New England, to New York City, to tropical Jamaica.",
+            "genre": "[\"Animation\", \"Action\", \"Adventure\", \"Comedy\", \"Family\"]"
+        }
+    },
+    {
+        "model": "movieapp.movie",
+        "pk": 1305928,
+        "fields": {
+            "title": "The Cult",
+            "year": "2024",
+            "tmdb_id": 1305928,
+            "description": "When a young woman relocates to a small town in Europe, she notices the place has something weird. As time goes by, she starts to fear for her life. Based on actual events and in the book the day she became plastic.",
+            "genre": "[\"Horror\"]"
+        }
+    },
+    {
+        "model": "movieapp.movie",
+        "pk": 1147400,
+        "fields": {
+            "title": "Miraculous World: Paris, Tales of Shadybug and Claw Noir",
+            "year": "2023",
+            "tmdb_id": 1147400,
+            "description": "Miraculous holders from another world appear in Paris. They come from a parallel universe where everything is reversed: the holders of Ladybug and Black Cat Miraculouses, Shadybug and Claw Noir, are the bad guys, and the holder of the Butterfly Miraculous, Hesperia, is a superhero. Ladybug and Cat Noir will have to help Hesperia counter the attacks of their evil doubles and prevent them from seizing the Butterfly's Miraculous. Can our heroes also help Hesperia make Shadybug and Claw Noir better people?",
+            "genre": "[\"Animation\", \"Adventure\", \"Action\", \"Fantasy\", \"Family\"]"
+        }
+    },
+    {
+        "model": "movieapp.movie",
+        "pk": 719221,
+        "fields": {
+            "title": "Tarot",
+            "year": "2024",
+            "tmdb_id": 719221,
+            "description": "When a group of friends recklessly violate the sacred rule of Tarot readings, they unknowingly unleash an unspeakable evil trapped within the cursed cards. One by one, they come face to face with fate and end up in a race against death.",
+            "genre": "[\"Horror\"]"
+        }
+    },
+    {
+        "model": "movieapp.movie",
+        "pk": 746036,
+        "fields": {
+            "title": "The Fall Guy",
+            "year": "2024",
+            "tmdb_id": 746036,
+            "description": "Fresh off an almost career-ending accident, stuntman Colt Seavers has to track down a missing movie star, solve a conspiracy and try to win back the love of his life while still doing his day job.",
+            "genre": "[\"Action\", \"Comedy\"]"
+        }
+    },
+    {
+        "model": "movieapp.movie",
+        "pk": 1025463,
+        "fields": {
+            "title": "Bionic",
+            "year": "2024",
+            "tmdb_id": 1025463,
+            "description": "When the progress of robotics makes Paralympic athletes the new sports stars, Maria dreams of competing against her sister. For that, she will have to enter a world of crime and violence.",
+            "genre": "[\"Science Fiction\", \"Action\", \"Adventure\"]"
         }
     },
     {
@@ -56,68 +166,13 @@
     },
     {
         "model": "movieapp.movie",
-        "pk": 955555,
+        "pk": 1280768,
         "fields": {
-            "title": "The Roundup: No Way Out",
-            "year": "2023",
-            "tmdb_id": 955555,
-            "description": "Detective Ma Seok-do changes his affiliation from the Geumcheon Police Station to the Metropolitan Investigation Team, in order to eradicate Japanese gangsters who enter Korea to commit heinous crimes.",
-            "genre": "[\"Action\", \"Crime\", \"Comedy\", \"Thriller\"]"
-        }
-    },
-    {
-        "model": "movieapp.movie",
-        "pk": 929590,
-        "fields": {
-            "title": "Civil War",
+            "title": "No Time to Spy: A Loud House Movie",
             "year": "2024",
-            "tmdb_id": 929590,
-            "description": "In the near future, a group of war journalists attempt to survive while reporting the truth as the United States stands on the brink of civil war.",
-            "genre": "[\"War\", \"Action\", \"Drama\"]"
-        }
-    },
-    {
-        "model": "movieapp.movie",
-        "pk": 150540,
-        "fields": {
-            "title": "Inside Out",
-            "year": "2015",
-            "tmdb_id": 150540,
-            "description": "When 11-year-old Riley moves to a new city, her Emotions team up to help her through the transition. Joy, Fear, Anger, Disgust and Sadness work together, but when Joy and Sadness get lost, they must journey through unfamiliar places to get back home.",
-            "genre": "[\"Animation\", \"Family\", \"Adventure\", \"Drama\", \"Comedy\"]"
-        }
-    },
-    {
-        "model": "movieapp.movie",
-        "pk": 829402,
-        "fields": {
-            "title": "Ultraman: Rising",
-            "year": "2024",
-            "tmdb_id": 829402,
-            "description": "With Tokyo under attack from kaiju, Ultraman discovers his greatest challenge isn’t fighting giant monsters - it’s raising one.",
-            "genre": "[\"Animation\", \"Science Fiction\", \"Family\", \"Action\"]"
-        }
-    },
-    {
-        "model": "movieapp.movie",
-        "pk": 786892,
-        "fields": {
-            "title": "Furiosa: A Mad Max Saga",
-            "year": "2024",
-            "tmdb_id": 786892,
-            "description": "As the world fell, young Furiosa is snatched from the Green Place of Many Mothers and falls into the hands of a great Biker Horde led by the Warlord Dementus. Sweeping through the Wasteland they come across the Citadel presided over by The Immortan Joe. While the two Tyrants war for dominance, Furiosa must survive many trials as she puts together the means to find her way home.",
-            "genre": "[\"Action\", \"Adventure\", \"Science Fiction\"]"
-        }
-    },
-    {
-        "model": "movieapp.movie",
-        "pk": 823464,
-        "fields": {
-            "title": "Godzilla x Kong: The New Empire",
-            "year": "2024",
-            "tmdb_id": 823464,
-            "description": "Following their explosive showdown, Godzilla and Kong must reunite against a colossal undiscovered threat hidden within our world, challenging their very existence – and our own.",
-            "genre": "[\"Science Fiction\", \"Action\", \"Adventure\"]"
+            "tmdb_id": 1280768,
+            "description": "Lincoln and the Louds are ecstatic to welcome their new Gran-Gran, Myrtle, into the family with a tropical wedding celebration; but the festivities are cut short when an old nemesis from Myrtle's secret agent past appears on the island.",
+            "genre": "[\"Animation\", \"Action\", \"Adventure\", \"Comedy\", \"Family\"]"
         }
     },
     {
@@ -133,90 +188,35 @@
     },
     {
         "model": "movieapp.movie",
-        "pk": 762441,
+        "pk": 1136318,
         "fields": {
-            "title": "A Quiet Place: Day One",
-            "year": "2024",
-            "tmdb_id": 762441,
-            "description": "As New York City is invaded by alien creatures who hunt by sound, a woman named Sammy fights to survive.",
-            "genre": "[\"Horror\", \"Science Fiction\", \"Thriller\"]"
-        }
-    },
-    {
-        "model": "movieapp.movie",
-        "pk": 1011985,
-        "fields": {
-            "title": "Kung Fu Panda 4",
-            "year": "2024",
-            "tmdb_id": 1011985,
-            "description": "Po is gearing up to become the spiritual leader of his Valley of Peace, but also needs someone to take his place as Dragon Warrior. As such, he will train a new kung fu practitioner for the spot and will encounter a villain called the Chameleon who conjures villains from the past.",
-            "genre": "[\"Animation\", \"Action\", \"Family\", \"Comedy\", \"Fantasy\"]"
-        }
-    },
-    {
-        "model": "movieapp.movie",
-        "pk": 653346,
-        "fields": {
-            "title": "Kingdom of the Planet of the Apes",
-            "year": "2024",
-            "tmdb_id": 653346,
-            "description": "Several generations in the future following Caesar's reign, apes are now the dominant species and live harmoniously while humans have been reduced to living in the shadows. As a new tyrannical ape leader builds his empire, one young ape undertakes a harrowing journey that will cause him to question all that he has known about the past and to make choices that will define a future for apes and humans alike.",
-            "genre": "[\"Science Fiction\", \"Adventure\", \"Action\"]"
-        }
-    },
-    {
-        "model": "movieapp.movie",
-        "pk": 519182,
-        "fields": {
-            "title": "Despicable Me 4",
-            "year": "2024",
-            "tmdb_id": 519182,
-            "description": "Gru and Lucy and their girls — Margo, Edith and Agnes — welcome a new member to the Gru family, Gru Jr., who is intent on tormenting his dad. Gru faces a new nemesis in Maxime Le Mal and his femme fatale girlfriend Valentina, and the family is forced to go on the run.",
-            "genre": "[\"Animation\", \"Family\", \"Comedy\", \"Action\"]"
-        }
-    },
-    {
-        "model": "movieapp.movie",
-        "pk": 1115623,
-        "fields": {
-            "title": "The Last Kumite",
-            "year": "2024",
-            "tmdb_id": 1115623,
-            "description": "When Karate champion Michael Rivers wins the last tournament of his career, shady businessman Ron Hall offers him the opportunity to fight in an illegal Kumite in Bulgaria against the world’s best martial artists.  When Michael declines, Hall has his daughter kidnapped and, in order to rescue her, Rivers is left with no choice but to compete in the deadly tournament. Arriving in Bulgaria, he finds out that he is not the only fighter whose loved one was taken. Rivers enlists the help of trainers Master Loren, and Julie Jackson but will it be enough for him to win the tournament and save his daughter’s life?",
-            "genre": "[\"Action\"]"
-        }
-    },
-    {
-        "model": "movieapp.movie",
-        "pk": 704673,
-        "fields": {
-            "title": "Trigger Warning",
-            "year": "2024",
-            "tmdb_id": 704673,
-            "description": "A Special Forces commando uncovers a dangerous conspiracy when she returns to her hometown looking for answers into her beloved father's death.",
-            "genre": "[\"Action\", \"Crime\", \"Thriller\"]"
-        }
-    },
-    {
-        "model": "movieapp.movie",
-        "pk": 1016346,
-        "fields": {
-            "title": "MR-9: Do or Die",
+            "title": "Battle Over Britain",
             "year": "2023",
-            "tmdb_id": 1016346,
-            "description": "Masud Rana is a Secret Agent with code name MR-9 of the Bangladesh Counter Intelligence Agency",
-            "genre": "[\"Action\", \"Drama\", \"Thriller\"]"
+            "tmdb_id": 1136318,
+            "description": "A young pilot, fresh out of training, is called to join a Flight while they wait for the call to scramble. Throughout a single day, he witnesses the skies of southern England filled with deadly dog fights, and after every exhausting battle the men return to their dispersal hut, only to find another of their number missing. Unwilling to surrender, the pilot and his comrades unite to take to the skies once more, determined to defend not only the airfield, but their entire country.",
+            "genre": "[\"War\"]"
         }
     },
     {
         "model": "movieapp.movie",
-        "pk": 1026999,
+        "pk": 748783,
         "fields": {
-            "title": "Kleks Academy",
+            "title": "The Garfield Movie",
             "year": "2024",
-            "tmdb_id": 1026999,
-            "description": "A seemingly ordinary girl finds her way into the eponymous Academy to explore the world of fairy tales, imagination and creativity. With the help of a crazy, talented teacher, she develops her unique abilities and also stumbles upon a clue that will help her unravel the biggest secret of the family...",
-            "genre": "[\"Fantasy\", \"Adventure\", \"Family\"]"
+            "tmdb_id": 748783,
+            "description": "Garfield, the world-famous, Monday-hating, lasagna-loving indoor cat, is about to have a wild outdoor adventure! After an unexpected reunion with his long-lost father – scruffy street cat Vic – Garfield and his canine friend Odie are forced from their perfectly pampered life into joining Vic in a hilarious, high-stakes heist.",
+            "genre": "[\"Animation\", \"Comedy\", \"Family\", \"Adventure\"]"
+        }
+    },
+    {
+        "model": "movieapp.movie",
+        "pk": 1020896,
+        "fields": {
+            "title": "Handling the Undead",
+            "year": "2024",
+            "tmdb_id": 1020896,
+            "description": "On a hot summer day in Oslo, the dead mysteriously awaken, and three families are thrown into chaos when their deceased loved ones come back to them. Who are they, and what do they want?",
+            "genre": "[\"Horror\", \"Drama\", \"Mystery\"]"
         }
     }
 ]
