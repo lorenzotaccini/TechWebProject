@@ -38,7 +38,7 @@ class Movie(models.Model):
 
     @property
     def poster_url(self):
-        api_key = '5dbf33ab1210565bba9d880c176bf3d8'
+        api_key = 'yourapi'
         base_url = f'https://api.themoviedb.org/3/movie/{self.tmdb_id}?api_key={api_key}'
 
         try:

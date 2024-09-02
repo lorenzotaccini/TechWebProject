@@ -23,6 +23,7 @@ class CreateRequestAjaxTest(TestCase):
         print('trying to make movie request as anonymous user, should be redirect to login page')
         self.client.logout()
         response = self.client.post(self.url)
+        print(response)
         self.assertEqual(response.status_code, 302)
 
     def test_create_request_success(self):
@@ -123,8 +124,8 @@ class MovieModelTest(TestCase):
         mock_response = {
             'poster_path': '/testposter.jpg'
         }
-        mock_get.return_value.json.return_value = mock_response
-
+        mock_get.return_value.json.return_value = mock_response  # set return value of mock to mock_response
+        print(mock_response)
         expected_url = 'https://image.tmdb.org/t/p/w342/testposter.jpg'
         self.assertEqual(self.movie.poster_url, expected_url)
 
