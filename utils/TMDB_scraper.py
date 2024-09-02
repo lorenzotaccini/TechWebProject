@@ -2,7 +2,7 @@ import requests
 import random
 import json
 
-API_KEY = '5dbf33ab1210565bba9d880c176bf3d8'
+API_KEY = 'yourAPIkey'
 
 
 def get_random_movies(num_movies=30):
