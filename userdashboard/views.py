@@ -87,7 +87,7 @@ def add_title(request):
     tmdb_id = request.POST.get('tmdb_id')
     if Movie.objects.filter(tmdb_id=tmdb_id).exists():
         return JsonResponse({'status': 'This title already exists in the catalog'})
-    api_key = '5dbf33ab1210565bba9d880c176bf3d8'
+    api_key = 'yourapikey'
     movie_info = movie_search_API.get_movie_details(tmdb_id, api_key)
     if movie_info is not None:
         new_movie = Movie(tmdb_id=tmdb_id,
